@@ -39,6 +39,14 @@ namespace CommodityCollector.Collector
             model.Attributes= GetGoodsAttributes();
             WinformLog.ShowLog($"商品属性分析结果:{Newtonsoft.Json.JsonConvert.SerializeObject(model.Attributes)}");
 
+            //商品图片
+            model.GoodsPictures = GetGoodsPictures();
+            WinformLog.ShowLog($"商品图片分析结果:{Newtonsoft.Json.JsonConvert.SerializeObject(model.GoodsPictures)}");
+
+            //商品描述
+            model.GoodsRemarks = GetGoodsRemarks();
+            WinformLog.ShowLog($"商品描述分析结果:{Newtonsoft.Json.JsonConvert.SerializeObject(model.GoodsRemarks)}");
+
             WinformLog.ShowLog(Environment.NewLine);
             WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
             WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
@@ -86,10 +94,10 @@ namespace CommodityCollector.Collector
         /// 获取商品属性
         /// </summary>
         /// <returns></returns>
-        private Dictionary<string,string> GetGoodsAttributes()
+        private Dictionary<string, string> GetGoodsAttributes()
         {
             var result = new Dictionary<string, string>();
-            for(var i = 2; i < 100; i++)
+            for (var i = 2; i < 100; i++)
             {
                 try
                 {
@@ -107,6 +115,61 @@ namespace CommodityCollector.Collector
                 }
             }
 
+            return result;
+        }
+
+        private List<string> GetGoodsPictures()
+        {
+            var result = new List<string>();
+            for(var i = 1; i < 100; i++)
+            {
+                try
+                {
+                    var xpath = $"//*[@id=\"spec-list\"]/ul/li[{i}]/img";
+                    var element = this.WebDriver.FindElement(By.XPath(xpath));
+                    if (element == null)
+                        break;
+
+                    //模拟点击一次页面才能抓到商品图片
+                    element.Click();
+                    var pictureElement = this.WebDriver.FindElement(By.Id("spec-img"));
+                    var jqimg = pictureElement.GetAttribute("jqimg");
+                    jqimg = jqimg.StartsWith("http://") ? jqimg : "http://" + jqimg.TrimStart("//".ToArray());
+                    result.Add(jqimg);
+                }
+                catch
+                {
+                    break;
+                }
+            }
+            return result;
+        }
+
+        private List<string> GetGoodsRemarks()
+        {
+            var result = new List<string>();
+            for(var i = 1; i < 5; i++)
+            {
+                for(var j = 1; i < 20; j++)
+                {
+                    try
+                    {
+                        var xpath = $"//*[@id=\"J-detail-content\"]/div/div[{i}]/img[{j}]";
+                        var element = this.WebDriver.FindElement(By.XPath(xpath));
+                        if (element == null)
+                            break;
+
+                        //延迟加载的才是真正的src
+                        var lazyload = element.GetAttribute("data-lazyload");
+                        lazyload = lazyload.StartsWith("http://") ? lazyload : "http://" + lazyload.TrimStart("//".ToArray());
+                        result.Add(lazyload);
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+            }
             return result;
         }
     }

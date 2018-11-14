@@ -1,0 +1,6 @@
+*.lock
+*.dll
+*.pdb
+/CommodityCollector/CommodityCollector/bin/Debug/*.exe
+*.cache
+/CommodityCollector/CommodityCollector/obj/Debug/*.exe

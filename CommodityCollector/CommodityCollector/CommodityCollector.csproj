@@ -84,6 +84,7 @@
     <Compile Include="Entity\ecs_goods.cs" />
     <Compile Include="Entity\ecs_goods_type.cs" />
     <Compile Include="Entity\IEntity.cs" />
+    <Compile Include="Log\WinformLog.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -125,9 +125,9 @@
             // 
             // btnClearLog
             // 
-            this.btnClearLog.Location = new System.Drawing.Point(28, 177);
+            this.btnClearLog.Location = new System.Drawing.Point(14, 177);
             this.btnClearLog.Name = "btnClearLog";
-            this.btnClearLog.Size = new System.Drawing.Size(75, 28);
+            this.btnClearLog.Size = new System.Drawing.Size(110, 28);
             this.btnClearLog.TabIndex = 1;
             this.btnClearLog.Text = "清空日志";
             this.btnClearLog.UseVisualStyleBackColor = true;
@@ -135,9 +135,9 @@
             // 
             // btnStartCollect
             // 
-            this.btnStartCollect.Location = new System.Drawing.Point(28, 40);
+            this.btnStartCollect.Location = new System.Drawing.Point(14, 42);
             this.btnStartCollect.Name = "btnStartCollect";
-            this.btnStartCollect.Size = new System.Drawing.Size(75, 28);
+            this.btnStartCollect.Size = new System.Drawing.Size(110, 28);
             this.btnStartCollect.TabIndex = 0;
             this.btnStartCollect.Text = "开始采集";
             this.btnStartCollect.UseVisualStyleBackColor = true;

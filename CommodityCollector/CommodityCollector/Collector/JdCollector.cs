@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using OpenQA.Selenium;
+using CommodityCollector.Log;
 
 namespace CommodityCollector.Collector
 {
@@ -16,21 +17,32 @@ namespace CommodityCollector.Collector
         public override async Task<JdModel> GetResult()
         {
 
+            WinformLog.ShowLog($"开始加载商品页:{this.Url}");
             await this.LoadWeb();
+            WinformLog.ShowLog($"加载商品页成功:{this.Url}");
 
             var model = new JdModel();
 
             //商品价格
             model.Price = GetPrice();
+            WinformLog.ShowLog($"商品价格分析结果:{model.Price}");
 
             //商品名称
             model.GoodsName = GetGoodsName();
+            WinformLog.ShowLog($"商品名称分析结果:{model.GoodsName}");
 
             //商品品牌
             model.Brand = GetBrand();
+            WinformLog.ShowLog($"商品品牌分析结果:{model.Brand}");
 
             //商品属性
             model.Attributes= GetGoodsAttributes();
+            WinformLog.ShowLog($"商品属性分析结果:{Newtonsoft.Json.JsonConvert.SerializeObject(model.Attributes)}");
+
+            WinformLog.ShowLog(Environment.NewLine);
+            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
+            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
+            WinformLog.ShowLog(Environment.NewLine);
 
             return await Task.FromResult(model);
         }

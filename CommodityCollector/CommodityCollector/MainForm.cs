@@ -1,4 +1,5 @@
 ﻿using CommodityCollector.Collector;
+using CommodityCollector.Log;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,7 @@ namespace CommodityCollector
         {
             InitializeComponent();
             ReadConfig();
+            WinformLog.SetUp(this.txtLog);
         }
 
         private async void ReadConfig()
@@ -114,14 +116,26 @@ namespace CommodityCollector
         {
             var urls = GetGoodsUrls();
             if (urls == null)
+            {
+                MessageBox.Show("请输入商品网址。", "提示！");
                 return;
+            }
+
+            foreach(var url in urls)
+            {
+                if (!url.StartsWith("https://item.jd.com") && !url.StartsWith("http://item.jd.com"))
+                {
+                    MessageBox.Show($"商品网址：{url}不符合采集要求，只能输入京东的商品地址。","提示！");
+                    return;
+                }
+            }
 
             StartCollect(urls);
         }
 
         private void btnClearLog_Click(object sender, EventArgs e)
         {
-            this.txtLog.Text = string.Empty;
+            WinformLog.Clear();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

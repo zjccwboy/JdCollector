@@ -84,14 +84,13 @@ namespace CommodityCollector
             return array.ToList();
         }
 
-        private async void StartCollect(List<string> urls)
+        private async Task StartCollect(List<string> urls)
         {
             this.btnStartCollect.Enabled = false;
             foreach (var url in urls)
             {
                 await CollectOne(url);
             }
-            this.btnStartCollect.Enabled = true;
         }
 
         private async Task CollectOne(string url)
@@ -102,32 +101,38 @@ namespace CommodityCollector
             DownLoad(model);
         }
 
-        private void DownLoad(JdModel model)
+        private async void DownLoad(JdModel model)
         {
-            DownGoodsPictures(model);
-            DownRemarksPictures(model);
+            await DownGoodsPictures(model);
+            WinformLog.ShowLog($"下载商品图片完成");
+            WinformLog.ShowLog(null);
+            await DownRemarksPictures(model);
+            WinformLog.ShowLog($"下载商品描述页图片完成");
+            WinformLog.ShowLog(Environment.NewLine);
+            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
+            WinformLog.ShowLog(Environment.NewLine);
         }
 
         /// <summary>
         /// 下载商品图片
         /// </summary>
         /// <param name="model"></param>
-        private void DownGoodsPictures(JdModel model)
+        private async Task DownGoodsPictures(JdModel model)
         {
             var path = this.txtPath.Text + "\\images\\goods";
             var goodsCollector = new GoodsPictureCollector(path);
-            goodsCollector.Collect(model.GoodsPictures);
+            await goodsCollector.Collect(model.GoodsPictures);
         }
 
         /// <summary>
         /// 下载商品描述页图片
         /// </summary>
         /// <param name="model"></param>
-        private void DownRemarksPictures(JdModel model)
+        private async Task DownRemarksPictures(JdModel model)
         {
             var path = this.txtPath.Text + "\\images\\remarks";
             var remarksCollector = new RemarkPictureCollector(path);
-            remarksCollector.Collect(model.GoodsPictures);
+            await remarksCollector.Collect(model.GoodsRemarks);
         }
 
         private void btnSelectPath_Click(object sender, EventArgs e)
@@ -144,7 +149,7 @@ namespace CommodityCollector
            await WriteConfig();
         }
 
-        private void btnStartCollect_Click(object sender, EventArgs e)
+        private async void btnStartCollect_Click(object sender, EventArgs e)
         {
             var urls = GetGoodsUrls();
             if (urls == null)
@@ -153,7 +158,9 @@ namespace CommodityCollector
                 return;
             }
 
-            foreach(var url in urls)
+            WinformLog.ShowLog("开始采集");
+
+            foreach (var url in urls)
             {
                 if (!url.StartsWith("https://item.jd.com") && !url.StartsWith("http://item.jd.com"))
                 {
@@ -161,8 +168,10 @@ namespace CommodityCollector
                     return;
                 }
             }
+            await StartCollect(urls);
 
-            StartCollect(urls);
+            WinformLog.ShowLog("采集完成");
+            this.btnStartCollect.Enabled = true;
         }
 
         private void btnClearLog_Click(object sender, EventArgs e)
@@ -178,6 +187,16 @@ namespace CommodityCollector
                 ChromeWebDriver.WebDriver.Quit();
             }
             catch { }
+        }
+
+        private void txtLog_TextChanged(object sender, EventArgs e)
+        {
+
+            //文本框选中的起始点在最后
+            this.txtLog.SelectionStart = this.txtLog.TextLength;
+
+            //将控件内容滚动到当前插入符号位置
+            this.txtLog.ScrollToCaret();
         }
     }
 }

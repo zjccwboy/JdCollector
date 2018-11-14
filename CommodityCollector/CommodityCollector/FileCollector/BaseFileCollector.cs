@@ -20,7 +20,7 @@ namespace CommodityCollector.FileCollector
             FileHelper.NotExistPathCreate(this.SavePath);
         }
 
-        public abstract void Collect(List<string> address);
+        public abstract Task Collect(List<string> address);
 
         public string GetFileName(string address)
         {

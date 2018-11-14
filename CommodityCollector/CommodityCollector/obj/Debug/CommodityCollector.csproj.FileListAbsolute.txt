@@ -40,7 +40,6 @@ D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\bin\Debug\HtmlAg
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\bin\Debug\MySql.Data.xml
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\bin\Debug\Newtonsoft.Json.xml
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\bin\Debug\WebDriver.xml
-D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\CommodityCollector.csprojAssemblyReference.cache
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\CommodityCollector.MainForm.resources
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\CommodityCollector.Properties.Resources.resources
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\CommodityCollector.csproj.GenerateResource.cache

@@ -11,10 +11,10 @@ namespace CommodityCollector.FileCollector
     {
         public GoodsPictureCollector(string savePath) : base(savePath)
         {
-            WinformLog.ShowLog($"开始下载商品图片：");
+            WinformLog.ShowLog($"开始下载商品图片");
         }
 
-        public override async void Collect(List<string> address)
+        public override async Task Collect(List<string> address)
         {
             if (address == null || !address.Any())
                 return;
@@ -26,11 +26,6 @@ namespace CommodityCollector.FileCollector
                 await HttpHelper.DownLoadAsync(addr, fileName);
                 WinformLog.ShowLog($"下载商品图片完成：{fileName}");
             }
-
-            WinformLog.ShowLog(Environment.NewLine);
-            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
-            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
-            WinformLog.ShowLog(Environment.NewLine);
         }
     }
 }

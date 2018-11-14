@@ -17,8 +17,6 @@ namespace CommodityCollector.Collector
 
         public override async Task<JdModel> GetResult()
         {
-
-            WinformLog.ShowLog($"开始加载商品页:{this.Url}");
             await this.LoadWeb();
             WinformLog.ShowLog($"加载商品页成功:{this.Url}");
 
@@ -56,12 +54,7 @@ namespace CommodityCollector.Collector
                 WinformLog.ShowLog($"{remark}");
             }
 
-
-            WinformLog.ShowLog(Environment.NewLine);
-            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
-            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
-            WinformLog.ShowLog(Environment.NewLine);
-
+            WinformLog.ShowLog(null);
             return await Task.FromResult(model);
         }
 

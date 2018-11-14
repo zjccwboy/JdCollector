@@ -1,5 +1,7 @@
 ﻿using CommodityCollector.Collector;
+using CommodityCollector.FileCollector;
 using CommodityCollector.Log;
+using CommodityCollector.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -96,6 +98,36 @@ namespace CommodityCollector
         {
             var collect = new JdCollector(url);
             var model = await collect.GetResult();
+
+            DownLoad(model);
+        }
+
+        private void DownLoad(JdModel model)
+        {
+            DownGoodsPictures(model);
+            DownRemarksPictures(model);
+        }
+
+        /// <summary>
+        /// 下载商品图片
+        /// </summary>
+        /// <param name="model"></param>
+        private void DownGoodsPictures(JdModel model)
+        {
+            var path = this.txtPath.Text + "\\images\\goods";
+            var goodsCollector = new GoodsPictureCollector(path);
+            goodsCollector.Collect(model.GoodsPictures);
+        }
+
+        /// <summary>
+        /// 下载商品描述页图片
+        /// </summary>
+        /// <param name="model"></param>
+        private void DownRemarksPictures(JdModel model)
+        {
+            var path = this.txtPath.Text + "\\images\\remarks";
+            var remarksCollector = new RemarkPictureCollector(path);
+            remarksCollector.Collect(model.GoodsPictures);
         }
 
         private void btnSelectPath_Click(object sender, EventArgs e)

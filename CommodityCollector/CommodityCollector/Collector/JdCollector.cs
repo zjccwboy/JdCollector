@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using OpenQA.Selenium;
 using CommodityCollector.Log;
+using System.Text.RegularExpressions;
 
 namespace CommodityCollector.Collector
 {
@@ -41,11 +42,20 @@ namespace CommodityCollector.Collector
 
             //商品图片
             model.GoodsPictures = GetGoodsPictures();
-            WinformLog.ShowLog($"商品图片分析结果:{Newtonsoft.Json.JsonConvert.SerializeObject(model.GoodsPictures)}");
+            WinformLog.ShowLog("商品图片分析结果：");
+            foreach (var picture in model.GoodsPictures)
+            {
+                WinformLog.ShowLog($"{picture}");
+            }
 
             //商品描述
             model.GoodsRemarks = GetGoodsRemarks();
-            WinformLog.ShowLog($"商品描述分析结果:{Newtonsoft.Json.JsonConvert.SerializeObject(model.GoodsRemarks)}");
+            WinformLog.ShowLog("商品描述分析结果：");
+            foreach (var remark in model.GoodsRemarks)
+            {
+                WinformLog.ShowLog($"{remark}");
+            }
+
 
             WinformLog.ShowLog(Environment.NewLine);
             WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
@@ -118,6 +128,10 @@ namespace CommodityCollector.Collector
             return result;
         }
 
+        /// <summary>
+        /// 商品图片
+        /// </summary>
+        /// <returns></returns>
         private List<string> GetGoodsPictures()
         {
             var result = new List<string>();
@@ -135,6 +149,7 @@ namespace CommodityCollector.Collector
                     var pictureElement = this.WebDriver.FindElement(By.Id("spec-img"));
                     var jqimg = pictureElement.GetAttribute("jqimg");
                     jqimg = jqimg.StartsWith("http://") ? jqimg : "http://" + jqimg.TrimStart("//".ToArray());
+                    jqimg = jqimg.Split(new string[] { "!" }, StringSplitOptions.RemoveEmptyEntries)[0];
                     result.Add(jqimg);
                 }
                 catch
@@ -145,32 +160,44 @@ namespace CommodityCollector.Collector
             return result;
         }
 
-        private List<string> GetGoodsRemarks()
+        /// <summary>
+        /// 商品详情页图片
+        /// </summary>
+        /// <returns></returns>
+        private  List<string> GetGoodsRemarks()
         {
             var result = new List<string>();
-            for(var i = 1; i < 5; i++)
-            {
-                for(var j = 1; i < 20; j++)
-                {
-                    try
-                    {
-                        var xpath = $"//*[@id=\"J-detail-content\"]/div/div[{i}]/img[{j}]";
-                        var element = this.WebDriver.FindElement(By.XPath(xpath));
-                        if (element == null)
-                            break;
 
-                        //延迟加载的才是真正的src
-                        var lazyload = element.GetAttribute("data-lazyload");
-                        lazyload = lazyload.StartsWith("http://") ? lazyload : "http://" + lazyload.TrimStart("//".ToArray());
-                        result.Add(lazyload);
-                    }
-                    catch
-                    {
-                        break;
-                    }
+            var regexStr = "data-lazyload=\".*.jpg\"";
+            var regex = new Regex(regexStr);
+            var source = this.WebDriver.PageSource;
+            var matchs = regex.Matches(source);
+
+            if (matchs.Count == 0)
+                return result;
+
+            foreach(Match match in matchs)
+            {
+                var list = match.Value.Split(new string[] { "data-lazyload=\"" }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (list == null)
+                    return result;
+
+                foreach (var imgUrl in list)
+                {
+                    regex = new Regex("//img[\\d]{1,2}.*.jpg");
+                    var matchNext = regex.Match(imgUrl);
+                    if (!matchNext.Success)
+                        continue;
+
+                    var value = matchNext.Value;
+                    value = value.StartsWith("http://") ? value : "http://" + value.TrimStart("//".ToArray());
+                    result.Add(value);
                 }
             }
+
             return result;
         }
+
     }
 }

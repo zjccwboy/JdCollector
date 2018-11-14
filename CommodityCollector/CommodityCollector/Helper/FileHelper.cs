@@ -18,8 +18,7 @@ namespace CommodityCollector
                 var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigEntity>(json);
                 return result = result == null ? new ConfigEntity() : result;
             }
-        }
-
+        }      
 
         public static async Task WriteConfig(ConfigEntity config)
         {
@@ -34,6 +33,22 @@ namespace CommodityCollector
         public static string GetConnectionString(ConfigEntity config)
         {
             return $"Database={config.DbName};Data Source={config.DbAddress};User Id={config.DbUser};Password={config.DbPassword};CharSet=utf8;port={config.DbPort}";
+        }
+        
+        public static void NotExistPathCreate(string path)
+        {
+            if (Directory.Exists(path))
+                return;
+
+            Directory.CreateDirectory(path);
+        }
+
+        public static void ExistFileDelete(string fileName)
+        {
+            if (!File.Exists(fileName))
+                return;
+
+            File.Delete(fileName);                
         }
     }
 }

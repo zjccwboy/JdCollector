@@ -84,6 +84,10 @@
     <Compile Include="Entity\ecs_goods.cs" />
     <Compile Include="Entity\ecs_goods_type.cs" />
     <Compile Include="Entity\IEntity.cs" />
+    <Compile Include="FileCollector\BaseFileCollector.cs" />
+    <Compile Include="FileCollector\GoodsPictureCollector.cs" />
+    <Compile Include="FileCollector\IFileCollector.cs" />
+    <Compile Include="FileCollector\RemarkPictureCollector.cs" />
     <Compile Include="Log\WinformLog.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -93,7 +97,6 @@
     </Compile>
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\HttpHelper.cs" />
-    <Compile Include="Helper\TimeHelper.cs" />
     <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\JdModel.cs" />
     <Compile Include="Mysql\AttributeRpository.cs" />

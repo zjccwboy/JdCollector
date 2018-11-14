@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommodityCollector.Helper
+namespace CommodityCollector
 {
     public class HttpHelper
     {
@@ -26,6 +26,15 @@ namespace CommodityCollector.Helper
             {
                 return true;
             };
+        }
+
+        public static async Task DownLoadAsync(string address, string fileName)
+        {
+            if (address.StartsWith("https"))
+                SupportHttps();
+
+            var webClient = new WebClient();
+            await webClient.DownloadFileTaskAsync(address, fileName);
         }
     }
 }

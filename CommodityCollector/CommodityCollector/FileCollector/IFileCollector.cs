@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommodityCollector.Helper
+namespace CommodityCollector.FileCollector
 {
-    public class TimeHelper
+    public interface IFileCollector
     {
-
+        void Collect(List<string> address);
     }
 }

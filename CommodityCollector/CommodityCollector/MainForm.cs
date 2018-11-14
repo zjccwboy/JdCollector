@@ -82,18 +82,18 @@ namespace CommodityCollector
 
         private async void StartCollect(List<string> urls)
         {
-            foreach(var url in urls)
+            this.btnStartCollect.Enabled = false;
+            foreach (var url in urls)
             {
                 await CollectOne(url);
             }
+            this.btnStartCollect.Enabled = true;
         }
 
         private async Task CollectOne(string url)
         {
-            using (var collect = new JdCollector(url))
-            {
-                var model = await collect.GetResult();
-            }
+            var collect = new JdCollector(url);
+            var model = await collect.GetResult();
         }
 
         private void btnSelectPath_Click(object sender, EventArgs e)
@@ -122,6 +122,16 @@ namespace CommodityCollector
         private void btnClearLog_Click(object sender, EventArgs e)
         {
             this.txtLog.Text = string.Empty;
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                ChromeWebDriver.WebDriver.Close();
+                ChromeWebDriver.WebDriver.Quit();
+            }
+            catch { }
         }
     }
 }

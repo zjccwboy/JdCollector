@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace CommodityCollector.Collector
 {
-    public class ChromeDriver
+    public class ChromeWebDriver
     {
         public static IWebDriver WebDriver { get; set; }
-        static ChromeDriver()
+        static ChromeWebDriver()
         {
-            WebDriver = new OpenQA.Selenium.Chrome.ChromeDriver();
+            WebDriver = new ChromeDriver();
         }
     }
 }

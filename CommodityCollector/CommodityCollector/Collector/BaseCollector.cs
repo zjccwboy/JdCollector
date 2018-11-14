@@ -1,5 +1,6 @@
 ﻿using CommodityCollector.Models;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,30 +9,27 @@ using System.Threading.Tasks;
 
 namespace CommodityCollector.Collector
 {
-    public abstract class BaseCollector<TModel> : IDisposable where TModel : IModel
+    public abstract class BaseCollector<TModel> where TModel : IModel
     {
         protected string Url { get; set; }
         protected IWebDriver WebDriver { get; set; }
         public BaseCollector(string url)
         {
             this.Url = url;
-            this.WebDriver = ChromeDriver.WebDriver;
-            LoadWeb();
+            this.WebDriver = ChromeWebDriver.WebDriver;
         }
 
         /// <summary>
         /// 加载网页
         /// </summary>
-        public void LoadWeb()
+        public async Task LoadWeb()
         {
-            this.WebDriver.Navigate().GoToUrl(this.Url);
+            await Task.Run(() =>
+            {
+                this.WebDriver.Navigate().GoToUrl(this.Url);
+            });
         }
 
         public abstract Task<TModel> GetResult();
-
-        public void Dispose()
-        {
-            this.WebDriver.Quit();
-        }
     }
 }

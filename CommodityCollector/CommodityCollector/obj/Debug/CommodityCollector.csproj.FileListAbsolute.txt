@@ -47,3 +47,4 @@ D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\Commod
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\CommodityCollector.csproj.CopyComplete
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\CommodityCollector.exe
 D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\CommodityCollector.pdb
+D:\JobProject\JdCollector\CommodityCollector\CommodityCollector\obj\Debug\CommodityCollector.csprojAssemblyReference.cache

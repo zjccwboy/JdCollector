@@ -84,10 +84,10 @@
     <Compile Include="Entity\ecs_goods.cs" />
     <Compile Include="Entity\ecs_goods_type.cs" />
     <Compile Include="Entity\IEntity.cs" />
-    <Compile Include="FileCollector\BaseFileCollector.cs" />
-    <Compile Include="FileCollector\GoodsPictureCollector.cs" />
-    <Compile Include="FileCollector\IFileCollector.cs" />
-    <Compile Include="FileCollector\RemarkPictureCollector.cs" />
+    <Compile Include="Downloader\BaseDownloader.cs" />
+    <Compile Include="Downloader\GoodsDownloader.cs" />
+    <Compile Include="Downloader\IDownloader.cs" />
+    <Compile Include="Downloader\RemarkDownloader.cs" />
     <Compile Include="Log\WinformLog.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -103,9 +103,15 @@
     <Compile Include="Mysql\BaseRpository.cs" />
     <Compile Include="Mysql\GoodsRpository.cs" />
     <Compile Include="Mysql\GoodsTypeRpository.cs" />
+    <Compile Include="Mysql\IRpository.cs" />
     <Compile Include="Mysql\MyConnection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Updator\AttributeUpdator.cs" />
+    <Compile Include="Updator\BaseUpdator.cs" />
+    <Compile Include="Updator\GoodsTypeUpdator.cs" />
+    <Compile Include="Updator\GoodsUpdator.cs" />
+    <Compile Include="Updator\IUpdator.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

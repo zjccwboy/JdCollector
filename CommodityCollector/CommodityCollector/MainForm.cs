@@ -120,7 +120,7 @@ namespace CommodityCollector
         private async Task DownGoodsPictures(JdModel model)
         {
             var path = this.txtPath.Text + "\\images\\goods";
-            var goodsCollector = new GoodsPictureCollector(path);
+            var goodsCollector = new GoodsDownloader(path);
             await goodsCollector.Collect(model.GoodsPictures);
         }
 
@@ -131,7 +131,7 @@ namespace CommodityCollector
         private async Task DownRemarksPictures(JdModel model)
         {
             var path = this.txtPath.Text + "\\images\\remarks";
-            var remarksCollector = new RemarkPictureCollector(path);
+            var remarksCollector = new RemarkDownloader(path);
             await remarksCollector.Collect(model.GoodsRemarks);
         }
 

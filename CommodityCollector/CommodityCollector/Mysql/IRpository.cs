@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommodityCollector.FileCollector
+namespace CommodityCollector.Mysql
 {
-    public interface IFileCollector
+    public interface IRpository<TEntity>
     {
-        Task Collect(List<string> address);
+        Task InsertAsync(TEntity entity);
     }
 }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CommodityCollector.FileCollector
 {
-    public class GoodsPictureCollector : BaseFileCollector
+    public class GoodsDownloader : BaseDownloader
     {
-        public GoodsPictureCollector(string savePath) : base(savePath)
+        public GoodsDownloader(string savePath) : base(savePath)
         {
             WinformLog.ShowLog($"开始下载商品图片");
         }
@@ -22,10 +22,12 @@ namespace CommodityCollector.FileCollector
             foreach (var addr in address)
             {
                 var fileName = this.GetFileName(addr);
-                this.ExistDelete(fileName);
-                await HttpHelper.DownLoadAsync(addr, fileName);
+                var fullName = this.SavePath + "\\" + fileName;
+                this.ExistDelete(fullName);
+                await HttpHelper.DownLoadAsync(addr, fullName);
                 WinformLog.ShowLog($"下载商品图片完成：{fileName}");
             }
         }
+
     }
 }

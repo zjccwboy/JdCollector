@@ -81,7 +81,7 @@ namespace CommodityCollector.FileCollector
 
             var newFileName = path + "\\" + fileName;
             FileHelper.ExistFileDelete(newFileName);
-            MakeThumbnail(sourceFileName, newFileName, 65, 65);
+            MakeThumbnail(sourceFileName, newFileName, 150, 150);
             return newFileName;
         }
 

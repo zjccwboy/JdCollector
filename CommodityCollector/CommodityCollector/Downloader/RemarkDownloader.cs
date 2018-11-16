@@ -14,7 +14,7 @@ namespace CommodityCollector.FileCollector
             WinformLog.ShowLog($"开始下载商品描述页图片");
         }
 
-        public override async Task Collect(List<string> address)
+        public override async Task Download(List<string> address)
         {
             if (address == null || !address.Any())
                 return;
@@ -27,6 +27,21 @@ namespace CommodityCollector.FileCollector
                 await HttpHelper.DownLoadAsync(addr, fullName);
                 WinformLog.ShowLog($"下载商品描述页图片完成：{fileName}");
             }
+        }
+
+        public List<string> GetDescPictures(List<string> address)
+        {
+            var result = new List<string>();
+            if (address == null || !address.Any())
+                return result;
+
+            foreach (var addr in address)
+            {
+                var fileName = this.GetFileName(addr);
+                var prcture = $"/image/remarks/{fileName}";
+                result.Add(prcture);
+            }
+            return result;
         }
 
     }

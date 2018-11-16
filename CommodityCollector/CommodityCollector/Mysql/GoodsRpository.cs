@@ -19,22 +19,29 @@ namespace CommodityCollector.Mysql
             return q.ToList();
         }
 
-        public override async Task InsertAsync(ecs_goods entity)
+        public async Task InsertAsync(ecs_goods entity)
         {
-            var sql = @"Insert into ecs_goods(cat_id, goods_sn, goods_name, goods_name_style,
-click_count, brand_id, provider_name, goods_number, goods_weight, market_price, shop_price, promote_price,
-promote_start_date, promote_end_date, warn_number, keywords, goods_brief, goods_desc, goods_thumb, goods_img,
-original_img, is_real, extension_code, is_on_sale, is_alone_sale, is_shipping, integral, add_time, sort_order,
-is_delete, is_best, is_new, is_hot, is_promote, bonus_type_id, last_update, goods_type, seller_note, give_integral,
-rank_integral, suppliers_id, is_check) values(@cat_id, @goods_sn, @goods_name, @goods_name_style,
-@click_count, @brand_id, @provider_name, @goods_number, @goods_weight, @market_price, @shop_price, @promote_price,
-@promote_start_date, @promote_end_date, @warn_number, @keywords, @goods_brief, @goods_desc, @goods_thumb, @goods_img,
-@original_img, @is_real, @extension_code, @is_on_sale, @is_alone_sale, @is_shipping, @integral, @add_time, @sort_order,
-@is_delete, @is_best, @is_new, @is_hot, @is_promote, @bonus_type_id, @last_update, @goods_type, @seller_note, @give_integral,
-@rank_integral, @suppliers_id, @is_check)";
+            var key = await this.sqlConnection.InsertAsync(entity);
+            if(key != null)
+                entity.goods_id = (uint)key.Value;
+        }
 
-            var command = new CommandDefinition(sql, entity);
-            var result = await this.sqlConnection.ExecuteAsync(command);
+        public async Task<ecs_goods> GetByName(string name)
+        {
+            var sql = $"select * from ecs_goods where goods_name='{name}'";
+            var q = await this.sqlConnection.QueryAsync<ecs_goods>(sql);
+            if (q.Any())
+            {
+                return q.First();
+            }
+            return null;
+        }
+
+        public async Task<bool> UpdateSnAsync(uint goodsId, string goodsSn)
+        {
+            var sql = $"update ecs_goods set goods_sn='{goodsSn}' where goods_id={goodsId}";
+            var q = await this.sqlConnection.ExecuteAsync(sql);
+            return q > 0;
         }
     }
 }

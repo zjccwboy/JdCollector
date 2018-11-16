@@ -20,9 +20,9 @@ namespace CommodityCollector.FileCollector
             FileHelper.NotExistPathCreate(this.SavePath);
         }
 
-        public abstract Task Collect(List<string> address);
+        public abstract Task Download(List<string> address);
 
-        public List<string> GetFileDirectorys(List<string> address)
+        public List<string> GetPictures(List<string> address)
         {
             var result = new List<string>();
             if (address == null || !address.Any())

@@ -34,6 +34,9 @@ namespace CommodityCollector.Collector
             model.Brand = GetBrand();
             WinformLog.ShowLog($"商品品牌分析结果：{model.Brand}");
 
+            model.AttributeName = GetAttributeNname();
+            WinformLog.ShowLog($"商品属性标签分析结果:{model.AttributeName}");
+
             //商品属性
             model.Attributes= GetGoodsAttributes();
             WinformLog.ShowLog($"商品属性分析结果：{Newtonsoft.Json.JsonConvert.SerializeObject(model.Attributes)}");
@@ -57,6 +60,7 @@ namespace CommodityCollector.Collector
             WinformLog.ShowLog(null);
             return await Task.FromResult(model);
         }
+
 
         /// <summary>
         /// 获取商品价格
@@ -91,6 +95,19 @@ namespace CommodityCollector.Collector
             var element = this.WebDriver.FindElement(By.Id("parameter-brand"));
             var result = element.Text.TrimStart("品牌：".ToArray());
             return result;
+        }
+
+        /// <summary>
+        /// 获取分类名字，用分类名字做商品属性主标签
+        /// </summary>
+        /// <returns></returns>
+        private string GetAttributeNname()
+        {
+            var element = this.WebDriver.FindElement(By.CssSelector("#crumb-wrap > div > div.crumb.fl.clearfix > div:nth-child(3) > a"));
+            if (element == null)
+                return string.Empty;
+
+            return element.Text;
         }
 
         /// <summary>

@@ -8,6 +8,6 @@ namespace CommodityCollector.FileCollector
 {
     public interface IDownloader
     {
-        Task Collect(List<string> address);
+        Task Download(List<string> address);
     }
 }

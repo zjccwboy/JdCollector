@@ -26,7 +26,11 @@ namespace CommodityCollector.Collector
         {
             await Task.Run(() =>
             {
-                this.WebDriver.Navigate().GoToUrl(this.Url);
+                try
+                {
+                    this.WebDriver.Navigate().GoToUrl(this.Url);
+                }
+                catch { }
             });
         }
 

@@ -9,15 +9,26 @@ using System.Threading.Tasks;
 
 namespace CommodityCollector.Updator
 {
-    public class GoodsTypeUpdator : BaseUpdator<ecs_goods_type, JdModel>
+    public class GoodsTypeUpdator : BaseUpdator<GoodsTypeRpository, ecs_goods_type, JdModel>
     {
 
         public GoodsTypeUpdator(GoodsTypeRpository rpository) : base(rpository) { }
 
-
-        public override Task AddOne(JdModel model)
+        public async Task<ecs_goods_type> AddOne(JdModel model)
         {
-            throw new NotImplementedException();
+            var entity = await this.Rpository.GetByName(model.AttributeName);
+            if (entity != null)
+                return entity;
+
+            entity = new ecs_goods_type
+            {
+                cat_name = model.AttributeName,
+                enabled = true,
+                attr_group = string.Empty,
+            };
+            await this.Rpository.InsertAsync(entity);
+
+            return entity;
         }
     }
 }

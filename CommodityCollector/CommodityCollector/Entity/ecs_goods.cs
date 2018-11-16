@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,14 @@ namespace CommodityCollector.Entity
 {
     public class ecs_goods : IEntity
     {
+        [Key]
         public uint goods_id { get; set; }
         public uint cat_id { get; set; }
         public string goods_sn { get; set; }
         public string goods_name { get; set; }
         public string goods_name_style { get; set; }
         public int click_count { get; set; }
-        public int brand_id { get; set; }
+        public uint brand_id { get; set; }
         public string provider_name { get; set; }
         public int goods_number { get; set; }
         public decimal goods_weight { get; set; }
@@ -44,7 +46,7 @@ namespace CommodityCollector.Entity
         public bool is_hot { get; set; }
         public bool is_promote { get; set; }
         public int bonus_type_id { get; set; }
-        public int last_update { get; set; }
+        public uint last_update { get; set; }
         public int goods_type { get; set; }
         public string seller_note { get; set; }
         public int give_integral { get; set; } = -1;

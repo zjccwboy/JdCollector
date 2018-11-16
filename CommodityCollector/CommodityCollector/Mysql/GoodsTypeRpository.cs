@@ -10,13 +10,22 @@ namespace CommodityCollector.Mysql
 {
     public class GoodsTypeRpository : BaseRpository<ecs_goods_type>
     {
-        public override async Task InsertAsync(ecs_goods_type entity)
+        public async Task InsertAsync(ecs_goods_type entity)
         {
-            var sql = @"Insert into ecs_goods_type(cat_name, enabled, attr_group) values(@cat_name, 
-@enabled, @attr_group)";
+            var key = await this.sqlConnection.InsertAsync(entity);
+            if (key != null)
+                entity.cat_id = (uint)key.Value;
+        }
 
-            var command = new CommandDefinition(sql, entity);
-            var result = await this.sqlConnection.ExecuteAsync(command);
+        public async Task<ecs_goods_type> GetByName(string name)
+        {
+            var sql = $"select * from ecs_goods_type where cat_name='{name}'";
+            var q = await this.sqlConnection.QueryAsync<ecs_goods_type>(sql);
+            if (q.Any())
+            {
+                return q.First();
+            }
+            return null;
         }
     }
 }

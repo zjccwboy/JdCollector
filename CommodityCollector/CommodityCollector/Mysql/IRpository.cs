@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CommodityCollector.Mysql
 {
-    public interface IRpository<TEntity>
+    public interface IRpository
     {
-        Task InsertAsync(TEntity entity);
+
     }
 }

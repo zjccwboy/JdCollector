@@ -9,16 +9,14 @@ using System.Threading.Tasks;
 
 namespace CommodityCollector.Updator
 {
-    public abstract class BaseUpdator<TEntity, TModel> : IUpdator where TEntity : IEntity where TModel : IModel
-    {        
+    public abstract class BaseUpdator<TRpository, TEntity, TModel> : IUpdator 
+        where TEntity : IEntity where TModel : IModel where TRpository : IRpository
+    {
+        public TRpository Rpository { get; }
 
-        protected IRpository<TEntity> Rpository { get;}
-
-        public BaseUpdator(IRpository<TEntity> rpository)
+        public BaseUpdator(TRpository rpository)
         {
             this.Rpository = rpository;
         }
-
-        public abstract Task AddOne(TModel model);
     }
 }

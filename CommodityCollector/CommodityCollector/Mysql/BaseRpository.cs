@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace CommodityCollector.Mysql
 {
-    public abstract class BaseRpository<TEntity> : IRpository<TEntity>, IDisposable where TEntity : IEntity
+    public abstract class BaseRpository<TEntity> : IRpository, IDisposable where TEntity : IEntity
     {
         protected IDbConnection sqlConnection { get; } = DapperService.MySqlConnection();
-        public abstract Task InsertAsync(TEntity entity);
 
         public void Dispose()
         {

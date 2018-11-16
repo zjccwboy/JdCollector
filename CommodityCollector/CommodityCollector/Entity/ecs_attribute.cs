@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,9 @@ namespace CommodityCollector.Entity
 {
     public class ecs_attribute : IEntity
     {
+        [Key]
         public uint attr_id { get; set; }
-        public int cat_id { get; set; }
+        public uint cat_id { get; set; }
         public string attr_name { get; set; }
         public bool attr_input_type { get; set; } = true;
         public bool attr_type { get; set; } = true;

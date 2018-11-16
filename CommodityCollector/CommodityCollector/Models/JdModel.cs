@@ -8,6 +8,7 @@ namespace CommodityCollector.Models
 {
     public class JdModel : IModel
     {
+        public string AttributeName { get; set; }
         public string GoodsName { get; set; }
         public decimal Price { get; set; }
         public string Brand { get; set; }

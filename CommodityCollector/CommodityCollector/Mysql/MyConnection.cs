@@ -12,6 +12,7 @@ namespace CommodityCollector.Mysql
     {
         public static MySqlConnection MySqlConnection()
         {
+            Dapper.SimpleCRUD.SetDialect(Dapper.SimpleCRUD.Dialect.MySQL);
             var connection = new MySqlConnection(DbConnection.ConnectionString);
             connection.Open();
             return connection;

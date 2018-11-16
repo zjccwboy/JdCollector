@@ -2,6 +2,7 @@
 using CommodityCollector.FileCollector;
 using CommodityCollector.Log;
 using CommodityCollector.Models;
+using CommodityCollector.Updator;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -103,36 +104,49 @@ namespace CommodityCollector
 
         private async void DownLoad(JdModel model)
         {
-            await DownGoodsPictures(model);
+
+            var updatorModel = new UpdatorModel
+            {
+                JdModel = model,
+            };
+
+            var path = this.txtPath.Text + "\\images\\goods";
+            var goodsCollector = new GoodsDownloader(path);
+            await goodsCollector.Download(model.GoodsPictures);
+
+            //商品默认图片
+            updatorModel.GoodsPicture = goodsCollector.GetGoodsPicture(model.GoodsPictures);
+
+            //商品图片列表
+            updatorModel.Pictures = goodsCollector.GetGoodsPictures(model.GoodsPictures);
+
+            //商品缩略图
+            updatorModel.Thumbnails = goodsCollector.GetThumbnails(model.GoodsPictures);
+
+
             WinformLog.ShowLog($"下载商品图片完成");
             WinformLog.ShowLog(null);
-            await DownRemarksPictures(model);
+
+
+            var path2 = this.txtPath.Text + "\\images\\remarks";
+            var remarksCollector = new RemarkDownloader(path2);
+            await remarksCollector.Download(model.GoodsRemarks);
+
+            //商品描述图片
+            updatorModel.DescPictures = remarksCollector.GetDescPictures(model.GoodsPictures);
             WinformLog.ShowLog($"下载商品描述页图片完成");
+
+            await UpdateToDatabase(updatorModel);
+
+
             WinformLog.ShowLog(Environment.NewLine);
             WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
             WinformLog.ShowLog(Environment.NewLine);
         }
 
-        /// <summary>
-        /// 下载商品图片
-        /// </summary>
-        /// <param name="model"></param>
-        private async Task DownGoodsPictures(JdModel model)
+        private async Task UpdateToDatabase(UpdatorModel model)
         {
-            var path = this.txtPath.Text + "\\images\\goods";
-            var goodsCollector = new GoodsDownloader(path);
-            await goodsCollector.Collect(model.GoodsPictures);
-        }
-
-        /// <summary>
-        /// 下载商品描述页图片
-        /// </summary>
-        /// <param name="model"></param>
-        private async Task DownRemarksPictures(JdModel model)
-        {
-            var path = this.txtPath.Text + "\\images\\remarks";
-            var remarksCollector = new RemarkDownloader(path);
-            await remarksCollector.Collect(model.GoodsRemarks);
+           await UpdatorManager.HandleJdModel(model);
         }
 
         private void btnSelectPath_Click(object sender, EventArgs e)

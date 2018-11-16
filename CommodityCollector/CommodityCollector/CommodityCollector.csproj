@@ -40,6 +40,9 @@
     <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper.SimpleCRUD, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.SimpleCRUD.2.0.1\lib\net45\Dapper.SimpleCRUD.dll</HintPath>
+    </Reference>
     <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
@@ -60,7 +63,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,13 +86,16 @@
     <Compile Include="Config\ConfigEntity.cs" />
     <Compile Include="Config\DbConnection.cs" />
     <Compile Include="Entity\ecs_attribute.cs" />
+    <Compile Include="Entity\ecs_brand.cs" />
     <Compile Include="Entity\ecs_goods.cs" />
+    <Compile Include="Entity\ecs_goods_attr.cs" />
     <Compile Include="Entity\ecs_goods_type.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Downloader\BaseDownloader.cs" />
     <Compile Include="Downloader\GoodsDownloader.cs" />
     <Compile Include="Downloader\IDownloader.cs" />
     <Compile Include="Downloader\RemarkDownloader.cs" />
+    <Compile Include="Helper\DateTimeHelper.cs" />
     <Compile Include="Log\WinformLog.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -99,8 +107,11 @@
     <Compile Include="Helper\HttpHelper.cs" />
     <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\JdModel.cs" />
+    <Compile Include="Models\UpdatorModel.cs" />
     <Compile Include="Mysql\AttributeRpository.cs" />
     <Compile Include="Mysql\BaseRpository.cs" />
+    <Compile Include="Mysql\BrandRpository.cs" />
+    <Compile Include="Mysql\GoodsAttributeRpository.cs" />
     <Compile Include="Mysql\GoodsRpository.cs" />
     <Compile Include="Mysql\GoodsTypeRpository.cs" />
     <Compile Include="Mysql\IRpository.cs" />
@@ -109,9 +120,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Updator\AttributeUpdator.cs" />
     <Compile Include="Updator\BaseUpdator.cs" />
+    <Compile Include="Updator\BrandUpdator.cs" />
+    <Compile Include="Updator\GoodsAttributeUpdator.cs" />
     <Compile Include="Updator\GoodsTypeUpdator.cs" />
     <Compile Include="Updator\GoodsUpdator.cs" />
     <Compile Include="Updator\IUpdator.cs" />
+    <Compile Include="Updator\UpdatorManager.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

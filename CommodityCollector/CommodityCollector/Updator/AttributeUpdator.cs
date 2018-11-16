@@ -9,14 +9,37 @@ using System.Threading.Tasks;
 
 namespace CommodityCollector.Updator
 {
-    public class AttributeUpdator : BaseUpdator<ecs_attribute, JdModel>
+    public class AttributeUpdator : BaseUpdator<AttributeRpository, ecs_attribute, JdModel>
     {
-
         public AttributeUpdator(AttributeRpository rpository) : base(rpository) { }
 
-        public override Task AddOne(JdModel model)
+        public async Task<Dictionary<uint, string>> AddAttributes(ecs_goods_type goodsType, List<string> attributes)
         {
-            throw new NotImplementedException();
+            var result = new Dictionary<uint, string>();
+            if (attributes == null || !attributes.Any())
+                return result;
+
+            foreach(var arrtibute in attributes)
+            {
+                var entity = await this.Rpository.GetByName(arrtibute);
+                if(entity != null)
+                {
+                    result[entity.attr_id] = arrtibute;
+                    continue;
+                }
+
+                entity = new ecs_attribute
+                {
+                    cat_id = goodsType.cat_id,
+                    attr_name = arrtibute,
+                    attr_input_type = false,
+                    attr_type = false,
+                    attr_values = string.Empty,
+                };
+                await this.Rpository.InsertAsync(entity);
+                result[entity.attr_id] = arrtibute;
+            }
+            return result;
         }
     }
 }

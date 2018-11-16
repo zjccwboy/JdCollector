@@ -19,7 +19,11 @@ namespace CommodityCollector.Updator
             {
                 var entity = await this.Rpository.GetByAttrId(kv.Key);
                 if (entity != null)
+                {
+                    entity.goods_id = goodsId;
+                    await this.Rpository.UpdateAsync(entity);
                     continue;
+                }
 
                 entity = new ecs_goods_attr
                 {
@@ -28,6 +32,8 @@ namespace CommodityCollector.Updator
                     attr_value = kv.Value,
                     attr_price = string.Empty,
                 };
+
+                await this.Rpository.InsertAsync(entity);
             }
         }
     }

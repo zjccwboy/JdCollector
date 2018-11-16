@@ -26,11 +26,13 @@ namespace CommodityCollector.Updator
             var brand = await AddBrand(model.JdModel);
 
             //写商品信息
-            var goodsEntity = await AddGoods(model, brand, goodsType.cat_id);
+            var goods = await AddGoods(model, brand, goodsType.cat_id);
 
             //写商品属性
-            await AddGoodsAttributes(goodsAttributes, goodsEntity);
+            await AddGoodsAttributes(goodsAttributes, goods);
 
+            //写商品图片框
+            await AddGoodsGallerys(model.Pictures, model.Thumbnails, goods);
         }
 
         private static Task<ecs_goods_type> AddGoodsType(JdModel model)
@@ -73,6 +75,12 @@ namespace CommodityCollector.Updator
         {
             var updator = new GoodsAttributeUpdator(new GoodsAttributeRpository());
             await updator.AddGoodsAttributes(goodsAttributes, goods.goods_id);
+        }
+
+        private static async Task AddGoodsGallerys(List<string> pictures, List<string> thumbPictures, ecs_goods goods)
+        {
+            var updator = new GoodsGalleryUpdator(new GoodsGalleryRpository());
+            await updator.AddGoodsGallerys(pictures, thumbPictures, goods.goods_id);
         }
     }
 }

@@ -21,6 +21,11 @@ namespace CommodityCollector.Mysql
             return null;
         }
 
+        public async Task UpdateAsync(ecs_goods_attr entity)
+        {
+            await this.sqlConnection.UpdateAsync(entity);
+        }
+
         public async Task InsertAsync(ecs_goods_attr entity)
         {
             var key = await this.sqlConnection.InsertAsync(entity);

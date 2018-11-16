@@ -89,6 +89,7 @@
     <Compile Include="Entity\ecs_brand.cs" />
     <Compile Include="Entity\ecs_goods.cs" />
     <Compile Include="Entity\ecs_goods_attr.cs" />
+    <Compile Include="Entity\ecs_goods_gallery.cs" />
     <Compile Include="Entity\ecs_goods_type.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Downloader\BaseDownloader.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Mysql\BaseRpository.cs" />
     <Compile Include="Mysql\BrandRpository.cs" />
     <Compile Include="Mysql\GoodsAttributeRpository.cs" />
+    <Compile Include="Mysql\GoodsGalleryRpository.cs" />
     <Compile Include="Mysql\GoodsRpository.cs" />
     <Compile Include="Mysql\GoodsTypeRpository.cs" />
     <Compile Include="Mysql\IRpository.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Updator\BaseUpdator.cs" />
     <Compile Include="Updator\BrandUpdator.cs" />
     <Compile Include="Updator\GoodsAttributeUpdator.cs" />
+    <Compile Include="Updator\GoodsGalleryUpdator.cs" />
     <Compile Include="Updator\GoodsTypeUpdator.cs" />
     <Compile Include="Updator\GoodsUpdator.cs" />
     <Compile Include="Updator\IUpdator.cs" />

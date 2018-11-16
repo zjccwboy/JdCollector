@@ -106,3 +106,5 @@
 [1116/182409.732:ERROR:exception_snapshot_win.cc(88)] thread ID 11352 not found in process
 [1116/185528.953:ERROR:process_reader_win.cc(123)] NtOpenThread: {无法访问} 过程已请求访问一对象，但未给访问权限。 (0xc0000022)
 [1116/185528.954:ERROR:exception_snapshot_win.cc(88)] thread ID 42284 not found in process
+[1116/193045.471:ERROR:process_reader_win.cc(123)] NtOpenThread: {无法访问} 过程已请求访问一对象，但未给访问权限。 (0xc0000022)
+[1116/193045.472:ERROR:exception_snapshot_win.cc(88)] thread ID 42264 not found in process

@@ -28,7 +28,8 @@ namespace CommodityCollector.Updator
             //写商品信息
             var goodsEntity = await AddGoods(model, brand, goodsType.cat_id);
 
-
+            //写商品属性
+            await AddGoodsAttributes(goodsAttributes, goodsEntity);
 
         }
 
@@ -66,6 +67,12 @@ namespace CommodityCollector.Updator
             var updator = new GoodsUpdator(new GoodsRpository());
             var entity = await updator.AddOne(model, brand, catId);
             return entity;
+        }
+
+        private static async Task AddGoodsAttributes(Dictionary<uint,string> goodsAttributes, ecs_goods goods)
+        {
+            var updator = new GoodsAttributeUpdator(new GoodsAttributeRpository());
+            await updator.AddGoodsAttributes(goodsAttributes, goods.goods_id);
         }
     }
 }

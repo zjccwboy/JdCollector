@@ -40,7 +40,7 @@ namespace CommodityCollector.FileCollector
 
             var addr = address.FirstOrDefault();
             var fileName = this.GetFileName(addr);
-            return $"/image/goods/{fileName}";
+            return $"/images/goods/{fileName}";
         }
 
         public List<string> GetGoodsPictures(List<string> address)
@@ -52,7 +52,7 @@ namespace CommodityCollector.FileCollector
             foreach(var addr in address)
             {
                 var fileName = this.GetFileName(addr);
-                var prcture = $"/image/goods/{fileName}";
+                var prcture = $"/images/goods/{fileName}";
                 result.Add(prcture);
             }
 
@@ -68,7 +68,7 @@ namespace CommodityCollector.FileCollector
             foreach (var addr in address)
             {
                 var fileName = this.GetFileName(addr);
-                var prcture = $"/image/goods/Thumbnail/{fileName}";
+                var prcture = $"/images/goods/Thumbnail/{fileName}";
                 result.Add(prcture);
             }
             return result;

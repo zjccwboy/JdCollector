@@ -16,5 +16,17 @@ namespace CommodityCollector.Mysql
             if (key != null)
                 entity.brand_id = (uint)key.Value;
         }
+
+        public async Task<ecs_brand> GetByName(string name)
+        {
+            var sql = $"select * from ecs_brand where brand_name='{name}'";
+            var command = new CommandDefinition(sql);
+            var q = await this.sqlConnection.QueryAsync<ecs_brand>(sql, command);
+            if (q.Any())
+            {
+                return q.First();
+            }
+            return null;
+        }
     }
 }

@@ -13,9 +13,9 @@ namespace CommodityCollector.Updator
     {
         public GoodsAttributeUpdator(GoodsAttributeRpository rpository) : base(rpository) { }
 
-        public async Task AddGoodsAttributes(Dictionary<uint,string> keyValues, uint goodsId)
+        public async Task AddGoodsAttributes(Dictionary<uint,string> goodsAttributes, uint goodsId)
         {
-            foreach(var kv in keyValues)
+            foreach(var kv in goodsAttributes)
             {
                 var entity = await this.Rpository.GetByAttrId(kv.Key);
                 if (entity != null)

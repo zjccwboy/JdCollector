@@ -38,7 +38,7 @@ namespace CommodityCollector.FileCollector
             foreach (var addr in address)
             {
                 var fileName = this.GetFileName(addr);
-                var prcture = $"/image/remarks/{fileName}";
+                var prcture = $"/images/remarks/{fileName}";
                 result.Add(prcture);
             }
             return result;

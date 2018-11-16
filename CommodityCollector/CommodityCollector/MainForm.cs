@@ -133,7 +133,7 @@ namespace CommodityCollector
             await remarksCollector.Download(model.GoodsRemarks);
 
             //商品描述图片
-            updatorModel.DescPictures = remarksCollector.GetDescPictures(model.GoodsPictures);
+            updatorModel.DescPictures = remarksCollector.GetDescPictures(model.GoodsRemarks);
             WinformLog.ShowLog($"下载商品描述页图片完成");
 
             await UpdateToDatabase(updatorModel);

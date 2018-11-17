@@ -11,7 +11,7 @@ namespace CommodityCollector.Updator
 {
     public class UpdatorManager
     {
-        public static async Task HandleJdModel(UpdatorModel model)
+        public static async Task Update(UpdatorModel model)
         {
             //写商品类型
             var goodsType = await AddGoodsType(model.JdModel);

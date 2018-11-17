@@ -146,7 +146,7 @@ namespace CommodityCollector
 
         private async Task UpdateToDatabase(UpdatorModel model)
         {
-           await UpdatorManager.HandleJdModel(model);
+           await UpdatorManager.Update(model);
         }
 
         private void btnSelectPath_Click(object sender, EventArgs e)

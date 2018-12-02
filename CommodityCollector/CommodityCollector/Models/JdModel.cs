@@ -12,6 +12,7 @@ namespace CommodityCollector.Models
         public string GoodsName { get; set; }
         public decimal Price { get; set; }
         public string Brand { get; set; }
+        public string Category { get; set; }
         public Dictionary<string, string> Attributes { get; set; }
         public List<string> GoodsPictures { get; set; }
         public List<string> GoodsRemarks { get; set; }

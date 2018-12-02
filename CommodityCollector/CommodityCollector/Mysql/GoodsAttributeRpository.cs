@@ -12,7 +12,7 @@ namespace CommodityCollector.Mysql
     {
         public async Task<ecs_goods_attr> GetByAttrId(uint attrId)
         {
-            var sql = $"select * from ecs_goods_attr where attr_id='{attrId}'";
+            var sql = $"select * from ecs_goods_attr where attr_id={attrId}";
             var q = await this.sqlConnection.QueryAsync<ecs_goods_attr>(sql);
             if (q.Any())
             {
@@ -31,6 +31,12 @@ namespace CommodityCollector.Mysql
             var key = await this.sqlConnection.InsertAsync(entity);
             if (key != null)
                 entity.goods_attr_id = (uint)key.Value;
+        }
+
+        public async Task DeleteByGoodsId(uint goodsId)
+        {
+            var sql = $"delete from ecs_goods_attr where goods_id ={goodsId}";
+            await this.sqlConnection.ExecuteAsync(sql);
         }
     }
 }

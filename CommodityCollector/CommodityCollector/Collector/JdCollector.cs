@@ -34,6 +34,11 @@ namespace CommodityCollector.Collector
             model.Brand = GetBrand();
             WinformLog.ShowLog($"商品品牌分析结果：{model.Brand}");
 
+            //商品分类
+            model.Category = GetCategory();
+            WinformLog.ShowLog($"商品分类分析结果：{model.GoodsName}");
+
+            //商品属性名
             model.AttributeName = GetAttributeNname();
             WinformLog.ShowLog($"商品属性标签分析结果:{model.AttributeName}");
 
@@ -127,6 +132,9 @@ namespace CommodityCollector.Collector
                         break;
 
                     var attributes = element.Text.Split(new string[] { "：" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (attributes[1].Contains("店铺"))
+                        continue;
+
                     result[attributes[0]] = attributes[1];
                 }
                 catch
@@ -207,6 +215,15 @@ namespace CommodityCollector.Collector
             }
 
             return result;
+        }
+
+        private string GetCategory()
+        {
+            var element = this.WebDriver.FindElement(By.CssSelector("#crumb-wrap > div > div.crumb.fl.clearfix > div:nth-child(3) > a"));
+            if (element == null)
+                return string.Empty;
+
+            return element.Text;
         }
 
     }

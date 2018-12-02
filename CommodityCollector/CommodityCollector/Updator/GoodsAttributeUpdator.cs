@@ -15,17 +15,19 @@ namespace CommodityCollector.Updator
 
         public async Task AddGoodsAttributes(Dictionary<uint,string> goodsAttributes, uint goodsId)
         {
+            await this.Rpository.DeleteByGoodsId(goodsId);
+
             foreach(var kv in goodsAttributes)
             {
-                var entity = await this.Rpository.GetByAttrId(kv.Key);
-                if (entity != null)
-                {
-                    entity.goods_id = goodsId;
-                    await this.Rpository.UpdateAsync(entity);
-                    continue;
-                }
+                //var entity = await this.Rpository.GetByAttrId(kv.Key);
+                //if (entity != null)
+                //{
+                //    entity.goods_id = goodsId;
+                //    await this.Rpository.UpdateAsync(entity);
+                //    continue;
+                //}
 
-                entity = new ecs_goods_attr
+                var entity = new ecs_goods_attr
                 {
                     goods_id = goodsId,
                     attr_id = kv.Key,

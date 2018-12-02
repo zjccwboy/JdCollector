@@ -15,7 +15,7 @@ namespace CommodityCollector.Updator
 
         public GoodsUpdator(GoodsRpository rpository) : base(rpository) { }
 
-        public async Task<ecs_goods> AddOne(UpdatorModel updatorModel, ecs_brand brand, uint catId)
+        public async Task<ecs_goods> AddOne(UpdatorModel updatorModel, ecs_brand brand, uint goodsTypeId, uint categoryId)
         {
             var sn = string.Empty;
             var model = updatorModel.JdModel;
@@ -32,13 +32,13 @@ namespace CommodityCollector.Updator
 
             entity = new ecs_goods
             {
-                cat_id = catId,
+                cat_id = categoryId,
                 goods_sn = string.Empty,
                 goods_name = model.GoodsName,
                 goods_name_style = string.Empty,
                 brand_id = brand.brand_id,
                 provider_name = string.Empty,
-                goods_number = new Random(1000).Next(100,1000),
+                goods_number = new Random().Next(100,1000),
                 goods_weight = 1000m,
                 market_price = model.Price * 1.2m,
                 shop_price = model.Price,
@@ -67,7 +67,7 @@ namespace CommodityCollector.Updator
                 is_promote = false,
                 bonus_type_id = 0,
                 last_update = DateTimeHelper.DataTimeToUnixStamp(DateTime.Now),
-                goods_type = 0,
+                goods_type = goodsTypeId,
                 seller_note = string.Empty,
                 give_integral = -1,
                 rank_integral = -1,

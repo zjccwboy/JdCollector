@@ -25,8 +25,11 @@ namespace CommodityCollector.Updator
             //写品牌信息
             var brand = await AddBrand(model.JdModel);
 
+            //写商品类型
+            var category = await AddCategory(model.JdModel);
+
             //写商品信息
-            var goods = await AddGoods(model, brand, goodsType.cat_id);
+            var goods = await AddGoods(model, brand, goodsType.cat_id, category.cat_id);
 
             //写商品属性
             await AddGoodsAttributes(goodsAttributes, goods);
@@ -64,10 +67,16 @@ namespace CommodityCollector.Updator
             return await updator.AddOne(model);
         }
 
-        private static async Task<ecs_goods> AddGoods(UpdatorModel model, ecs_brand brand, uint catId)
+        private static async Task<ecs_category> AddCategory(JdModel model)
+        {
+            var updator = new CategoryUpdator(new CategoryRpository());
+            return await updator.AddOne(model.Category);
+        }
+
+        private static async Task<ecs_goods> AddGoods(UpdatorModel model, ecs_brand brand, uint goodsTypeId, uint categoryId)
         {
             var updator = new GoodsUpdator(new GoodsRpository());
-            var entity = await updator.AddOne(model, brand, catId);
+            var entity = await updator.AddOne(model, brand, goodsTypeId, categoryId);
             return entity;
         }
 

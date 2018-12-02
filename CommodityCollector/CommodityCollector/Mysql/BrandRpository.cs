@@ -21,7 +21,7 @@ namespace CommodityCollector.Mysql
         {
             var sql = $"select * from ecs_brand where brand_name='{name}'";
             var command = new CommandDefinition(sql);
-            var q = await this.sqlConnection.QueryAsync<ecs_brand>(sql, command);
+            var q = await this.sqlConnection.QueryAsync<ecs_brand>(command);
             if (q.Any())
             {
                 return q.First();

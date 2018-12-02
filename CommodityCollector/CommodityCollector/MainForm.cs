@@ -3,6 +3,7 @@ using CommodityCollector.FileCollector;
 using CommodityCollector.Log;
 using CommodityCollector.Models;
 using CommodityCollector.Updator;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,8 @@ namespace CommodityCollector
 {
     public partial class MainForm : Form
     {
+        private bool IsRunOut { get; set; }
+
         public MainForm()
         {
             InitializeComponent();
@@ -90,19 +93,36 @@ namespace CommodityCollector
             this.btnStartCollect.Enabled = false;
             foreach (var url in urls)
             {
-                await CollectOne(url);
+                await CollectOne(url, 0);
             }
         }
 
-        private async Task CollectOne(string url)
+        private async Task CollectOne(string url, int retry)
         {
-            var collect = new JdCollector(url);
-            var model = await collect.GetResult();
+            try
+            {
+                var collect = new JdCollector(url);
+                var model = await collect.GetResult();
 
-            DownLoad(model);
+                var updatorModel = await DownLoad(model);
+                await UpdateToDatabase(updatorModel);
+
+                WinformLog.ShowLog(Environment.NewLine);
+                WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
+                WinformLog.ShowLog(Environment.NewLine);
+            }
+            catch
+            {
+                ChromeWebDriver.WebDriver.Close();
+                ChromeWebDriver.WebDriver.Quit();
+                ChromeWebDriver.WebDriver = new ChromeDriver();
+                if (retry > 3)
+                    return;
+                await CollectOne(url, ++retry);
+            }
         }
 
-        private async void DownLoad(JdModel model)
+        private async Task<UpdatorModel> DownLoad(JdModel model)
         {
 
             var updatorModel = new UpdatorModel
@@ -136,12 +156,7 @@ namespace CommodityCollector
             updatorModel.DescPictures = remarksCollector.GetDescPictures(model.GoodsRemarks);
             WinformLog.ShowLog($"下载商品描述页图片完成");
 
-            await UpdateToDatabase(updatorModel);
-
-
-            WinformLog.ShowLog(Environment.NewLine);
-            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
-            WinformLog.ShowLog(Environment.NewLine);
+            return updatorModel;
         }
 
         private async Task UpdateToDatabase(UpdatorModel model)
@@ -173,6 +188,7 @@ namespace CommodityCollector
             }
 
             WinformLog.ShowLog("开始采集");
+            this.IsRunOut = true;
 
             foreach (var url in urls)
             {
@@ -197,6 +213,9 @@ namespace CommodityCollector
         {
             try
             {
+                if (!this.IsRunOut)
+                    return;
+
                 ChromeWebDriver.WebDriver.Close();
                 ChromeWebDriver.WebDriver.Quit();
             }

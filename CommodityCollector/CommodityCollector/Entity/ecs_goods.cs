@@ -47,7 +47,7 @@ namespace CommodityCollector.Entity
         public bool is_promote { get; set; }
         public int bonus_type_id { get; set; }
         public uint last_update { get; set; }
-        public int goods_type { get; set; }
+        public uint goods_type { get; set; }
         public string seller_note { get; set; }
         public int give_integral { get; set; } = -1;
         public int rank_integral { get; set; } = -1;

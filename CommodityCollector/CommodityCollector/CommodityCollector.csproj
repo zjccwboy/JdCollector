@@ -85,6 +85,7 @@
     <Compile Include="Collector\JdCollector.cs" />
     <Compile Include="Config\ConfigEntity.cs" />
     <Compile Include="Config\DbConnection.cs" />
+    <Compile Include="Entity\ecs_category.cs" />
     <Compile Include="Entity\ecs_attribute.cs" />
     <Compile Include="Entity\ecs_brand.cs" />
     <Compile Include="Entity\ecs_goods.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Mysql\AttributeRpository.cs" />
     <Compile Include="Mysql\BaseRpository.cs" />
     <Compile Include="Mysql\BrandRpository.cs" />
+    <Compile Include="Mysql\CategoryRpository.cs" />
     <Compile Include="Mysql\GoodsAttributeRpository.cs" />
     <Compile Include="Mysql\GoodsGalleryRpository.cs" />
     <Compile Include="Mysql\GoodsRpository.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Updator\AttributeUpdator.cs" />
     <Compile Include="Updator\BaseUpdator.cs" />
     <Compile Include="Updator\BrandUpdator.cs" />
+    <Compile Include="Updator\CategoryUpdator.cs" />
     <Compile Include="Updator\GoodsAttributeUpdator.cs" />
     <Compile Include="Updator\GoodsGalleryUpdator.cs" />
     <Compile Include="Updator\GoodsTypeUpdator.cs" />

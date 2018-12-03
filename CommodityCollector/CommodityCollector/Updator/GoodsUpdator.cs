@@ -17,6 +17,7 @@ namespace CommodityCollector.Updator
 
         public async Task<ecs_goods> AddOne(UpdatorModel updatorModel, ecs_brand brand, uint goodsTypeId, uint categoryId)
         {
+            var isNew = true;
             var sn = string.Empty;
             var model = updatorModel.JdModel;
             var entity = await this.Rpository.GetByName(model.GoodsName);
@@ -27,13 +28,14 @@ namespace CommodityCollector.Updator
                 {
                     entity.goods_sn = sn;
                 }
-                return entity;
+                isNew = false;
+                //return entity;
             }
 
             entity = new ecs_goods
             {
                 cat_id = categoryId,
-                goods_sn = string.Empty,
+                //goods_sn = string.Empty,
                 goods_name = model.GoodsName,
                 goods_name_style = string.Empty,
                 //brand_id = brand.brand_id,
@@ -75,6 +77,13 @@ namespace CommodityCollector.Updator
                 is_check = false,
             };
 
+            if (!isNew)
+            {
+                await this.Rpository.UpdateAsync(entity);
+                return entity;
+            }
+
+            entity.goods_sn = string.Empty;
             await this.Rpository.InsertAsync(entity);
 
             sn = GetGoodsSn(entity.goods_id);

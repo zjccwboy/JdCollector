@@ -43,5 +43,10 @@ namespace CommodityCollector.Mysql
             var q = await this.sqlConnection.ExecuteAsync(sql);
             return q > 0;
         }
+
+        public async Task UpdateAsync(ecs_goods entity)
+        {
+            await this.sqlConnection.UpdateAsync(entity);
+        }
     }
 }

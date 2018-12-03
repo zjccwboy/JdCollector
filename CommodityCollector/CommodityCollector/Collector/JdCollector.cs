@@ -47,7 +47,7 @@ namespace CommodityCollector.Collector
             WinformLog.ShowLog($"商品属性分析结果：{Newtonsoft.Json.JsonConvert.SerializeObject(model.Attributes)}");
 
             //商品图片
-            model.GoodsPictures = GetGoodsPictures();
+            model.GoodsPictures = await GetGoodsPictures();
             WinformLog.ShowLog("商品图片分析结果：");
             foreach (var picture in model.GoodsPictures)
             {
@@ -55,7 +55,7 @@ namespace CommodityCollector.Collector
             }
 
             //商品描述
-            model.GoodsRemarks = GetGoodsRemarks();
+            model.GoodsRemarks = await GetGoodsRemarks();
             WinformLog.ShowLog("商品描述分析结果：");
             foreach (var remark in model.GoodsRemarks)
             {
@@ -150,32 +150,35 @@ namespace CommodityCollector.Collector
         /// 商品图片
         /// </summary>
         /// <returns></returns>
-        private List<string> GetGoodsPictures()
+        private async Task<List<string>> GetGoodsPictures()
         {
             var result = new List<string>();
-            for(var i = 1; i < 100; i++)
+            await Task.Run(() =>
             {
-                try
+                for (var i = 1; i < 100; i++)
                 {
-                    var xpath = $"//*[@id=\"spec-list\"]/ul/li[{i}]/img";
-                    var element = this.WebDriver.FindElement(By.XPath(xpath));
-                    if (element == null)
-                        break;
+                    try
+                    {
+                        var xpath = $"//*[@id=\"spec-list\"]/ul/li[{i}]/img";
+                        var element = this.WebDriver.FindElement(By.XPath(xpath));
+                        if (element == null)
+                            break;
 
-                    //模拟点击一次页面才能抓到商品图片
-                    element.Click();
-                    var pictureElement = this.WebDriver.FindElement(By.Id("spec-img"));
-                    var jqimg = pictureElement.GetAttribute("jqimg");
-                    jqimg = jqimg.StartsWith("http://") ? jqimg : "http://" + jqimg.TrimStart("//".ToArray());
-                    jqimg = jqimg.Split(new string[] { "!" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    jqimg = jqimg.Replace(@"/n0/", "/imgzone/");
-                    result.Add(jqimg);
+                        //模拟点击一次页面才能抓到商品图片
+                        element.Click();
+                        var pictureElement = this.WebDriver.FindElement(By.Id("spec-img"));
+                        var jqimg = pictureElement.GetAttribute("jqimg");
+                        jqimg = jqimg.StartsWith("http://") ? jqimg : "http://" + jqimg.TrimStart("//".ToArray());
+                        jqimg = jqimg.Split(new string[] { "!" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                        jqimg = jqimg.Replace(@"/n0/", "/imgzone/");
+                        result.Add(jqimg);
+                    }
+                    catch
+                    {
+                        break;
+                    }
                 }
-                catch
-                {
-                    break;
-                }
-            }
+            });
             return result;
         }
 
@@ -183,42 +186,43 @@ namespace CommodityCollector.Collector
         /// 商品详情页图片
         /// </summary>
         /// <returns></returns>
-        private  List<string> GetGoodsRemarks()
+        private async Task<List<string>>  GetGoodsRemarks()
         {
             var result = new List<string>();
-
-            var regexStr = "data-lazyload=\".*.jpg\"";
-            var regex = new Regex(regexStr);
-            var source = this.WebDriver.PageSource;
-            var matchs = regex.Matches(source);
-
-            if (matchs.Count == 0)
-                return result;
-
-            foreach(Match match in matchs)
+            await Task.Run(() =>
             {
-                var list = match.Value.Split(new string[] { "data-lazyload=\"" }, StringSplitOptions.RemoveEmptyEntries);
+                var regexStr = "data-lazyload=\".*.jpg\"";
+                var regex = new Regex(regexStr);
+                var source = this.WebDriver.PageSource;
+                var matchs = regex.Matches(source);
 
-                if (list == null)
-                    return result;
+                if (matchs.Count == 0)
+                    return;
 
-                foreach (var imgUrl in list)
+                foreach (Match match in matchs)
                 {
-                    regex = new Regex("//img[\\d]{1,2}.*.jpg");
-                    var matchNext = regex.Match(imgUrl);
-                    if (!matchNext.Success)
-                        continue;
+                    var list = match.Value.Split(new string[] { "data-lazyload=\"" }, StringSplitOptions.RemoveEmptyEntries);
 
-                    var value = matchNext.Value;
-                    value = value.StartsWith("http://") ? value : "http://" + value.TrimStart("//".ToArray());
-                    if (value.Contains("width="))
+                    if (list == null)
+                        return;
+
+                    foreach (var imgUrl in list)
                     {
-                        value = value.Split(new string[] { "width=" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    }
-                    result.Add(value);
-                }
-            }
+                        regex = new Regex("//img[\\d]{1,2}.*.jpg");
+                        var matchNext = regex.Match(imgUrl);
+                        if (!matchNext.Success)
+                            continue;
 
+                        var value = matchNext.Value;
+                        value = value.StartsWith("http://") ? value : "http://" + value.TrimStart("//".ToArray());
+                        if (value.Contains("width="))
+                        {
+                            value = value.Split(new string[] { "width=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                        }
+                        result.Add(value);
+                    }
+                }
+            });
             return result;
         }
 

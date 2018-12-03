@@ -168,6 +168,7 @@ namespace CommodityCollector.Collector
                     var jqimg = pictureElement.GetAttribute("jqimg");
                     jqimg = jqimg.StartsWith("http://") ? jqimg : "http://" + jqimg.TrimStart("//".ToArray());
                     jqimg = jqimg.Split(new string[] { "!" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    jqimg = jqimg.Replace(@"/n0/", "/imgzone/");
                     result.Add(jqimg);
                 }
                 catch
@@ -210,6 +211,10 @@ namespace CommodityCollector.Collector
 
                     var value = matchNext.Value;
                     value = value.StartsWith("http://") ? value : "http://" + value.TrimStart("//".ToArray());
+                    if (value.Contains("width="))
+                    {
+                        value = value.Split(new string[] { "width=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    }
                     result.Add(value);
                 }
             }

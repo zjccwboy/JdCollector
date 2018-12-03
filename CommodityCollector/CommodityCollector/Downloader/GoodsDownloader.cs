@@ -19,17 +19,27 @@ namespace CommodityCollector.FileCollector
             if (address == null || !address.Any())
                 return;
 
+            var deletes = new List<string>();
             foreach (var addr in address)
             {
                 var fileName = this.GetFileName(addr);
                 var fullName = this.SavePath + "\\" + fileName;
                 this.ExistDelete(fullName);
 
-                await HttpHelper.DownLoadAsync(addr, fullName);
+                if(!await HttpHelper.DownLoadAsync(addr, fullName))
+                {
+                    deletes.Add(addr);
+                    continue;
+                }
                 WinformLog.ShowLog($"下载商品图片完成：{fileName}");
 
                 var thumbnailName = MakeThumbnail(fullName, fileName);
                 WinformLog.ShowLog($"生成缩略图完成：{thumbnailName}");
+            }
+
+            foreach(var delete in deletes)
+            {
+                address.Remove(delete);
             }
         }
 

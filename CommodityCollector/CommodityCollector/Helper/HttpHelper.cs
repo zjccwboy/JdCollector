@@ -28,7 +28,7 @@ namespace CommodityCollector
             };
         }
 
-        public static async Task DownLoadAsync(string address, string fileName)
+        public static async Task<bool> DownLoadAsync(string address, string fileName)
         {
             if (address.StartsWith("https"))
                 SupportHttps();
@@ -37,8 +37,10 @@ namespace CommodityCollector
             try
             {
                 await webClient.DownloadFileTaskAsync(address, fileName);
+                return true;
             }
             catch { }
+            return false;
         }
     }
 }

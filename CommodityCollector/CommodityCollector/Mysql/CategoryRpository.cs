@@ -38,11 +38,16 @@ namespace CommodityCollector.Mysql
         {
             var sql = "select max(sort_order) from ecs_category";
             var command = new CommandDefinition(sql);
-            var q = await this.sqlConnection.QueryAsync<uint>(command);
-            if (q.Any())
+            try
             {
-                return (int)q.First();
+                var q = await this.sqlConnection.QueryAsync<uint>(command);
+                if (q.Any())
+                {
+                    return (int)q.First();
+                }
             }
+            catch{}
+
             return -1;
         }
     }

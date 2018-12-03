@@ -36,7 +36,7 @@ namespace CommodityCollector.Updator
                 goods_sn = string.Empty,
                 goods_name = model.GoodsName,
                 goods_name_style = string.Empty,
-                brand_id = brand.brand_id,
+                //brand_id = brand.brand_id,
                 provider_name = string.Empty,
                 goods_number = new Random().Next(100,1000),
                 goods_weight = 1000m,

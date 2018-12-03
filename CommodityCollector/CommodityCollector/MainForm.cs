@@ -99,19 +99,13 @@ namespace CommodityCollector
 
         private async Task CollectOne(string url, int retry)
         {
+            JdModel model = null;
             try
             {
                 var collect = new JdCollector(url);
-                var model = await collect.GetResult();
-
-                var updatorModel = await DownLoad(model);
-                await UpdateToDatabase(updatorModel);
-
-                WinformLog.ShowLog(Environment.NewLine);
-                WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
-                WinformLog.ShowLog(Environment.NewLine);
+                model = await collect.GetResult();
             }
-            catch
+            catch(Exception e)
             {
                 ChromeWebDriver.WebDriver.Close();
                 ChromeWebDriver.WebDriver.Quit();
@@ -120,6 +114,13 @@ namespace CommodityCollector
                     return;
                 await CollectOne(url, ++retry);
             }
+
+            var updatorModel = await DownLoad(model);
+            await UpdateToDatabase(updatorModel);
+
+            WinformLog.ShowLog(Environment.NewLine);
+            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
+            WinformLog.ShowLog(Environment.NewLine);
         }
 
         private async Task<UpdatorModel> DownLoad(JdModel model)

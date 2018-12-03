@@ -34,7 +34,11 @@ namespace CommodityCollector
                 SupportHttps();
 
             var webClient = new WebClient();
-            await webClient.DownloadFileTaskAsync(address, fileName);
+            try
+            {
+                await webClient.DownloadFileTaskAsync(address, fileName);
+            }
+            catch { }
         }
     }
 }

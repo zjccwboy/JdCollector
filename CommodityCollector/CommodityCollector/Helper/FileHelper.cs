@@ -23,6 +23,8 @@ namespace CommodityCollector
         public static async Task WriteConfig(ConfigEntity config)
         {
             var path = Directory.GetCurrentDirectory() + "/Config.json";
+            ExistFileDelete(path);
+
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(config);
             using(var sw = new StreamWriter(File.Open(path, FileMode.OpenOrCreate)))
             {

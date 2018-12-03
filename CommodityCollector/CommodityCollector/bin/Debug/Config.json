@@ -1,8 +1,1 @@
-{
-	"Path": "D:\\web\\18000",
-	"DbAddress": "localhost",
-	"DbName": "18000",
-	"DbUser": "root",
-	"DbPassword": "root",
-	"DbPort": "3306"
-}
+{"Path":"D:\\web\\18004","DbAddress":"localhost","DbName":"18004","DbUser":"root","DbPassword":"root","DbPort":"3306"}

@@ -32,6 +32,8 @@ namespace CommodityCollector.Updator
                 //return entity;
             }
 
+
+            var weight = GetWeight(updatorModel);
             entity = new ecs_goods
             {
                 cat_id = categoryId,
@@ -95,6 +97,38 @@ namespace CommodityCollector.Updator
             return entity;
         }
 
+        private decimal GetWeight(UpdatorModel updatorModel)
+        {
+            decimal result = 1m;
+            if (!updatorModel.JdModel.Attributes.Any())
+                return result;
+            
+            if(updatorModel.JdModel.Attributes.TryGetValue("重量", out string val))
+            {
+                val = val.ToLower().TrimEnd("kg".ToArray());
+                val = val.TrimEnd('g');
+                decimal.TryParse(val, out result);
+                return result;
+            }
+
+            if (updatorModel.JdModel.Attributes.TryGetValue("商品重量", out val))
+            {
+                val = val.ToLower().TrimEnd("kg".ToArray());
+                val = val.TrimEnd('g');
+                decimal.TryParse(val, out result);
+                return result;
+            }
+
+            if (updatorModel.JdModel.Attributes.TryGetValue("商品毛重", out val))
+            {
+                val = val.ToLower().TrimEnd("kg".ToArray());
+                val = val.TrimEnd('g');
+                decimal.TryParse(val, out result);
+                return result;
+            }
+
+            return result;
+        }
 
         private string GetGoodsSn(uint goodsId)
         {

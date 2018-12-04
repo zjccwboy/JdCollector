@@ -15,6 +15,9 @@ namespace CommodityCollector.Updator
 
         public async Task<ecs_brand> AddOne(JdModel model)
         {
+            if (string.IsNullOrEmpty(model.Brand))
+                return null;
+
             var entity = await this.Rpository.GetByName(model.Brand);
             if (entity != null)
                 return entity;

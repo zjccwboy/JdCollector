@@ -97,9 +97,14 @@ namespace CommodityCollector.Collector
         /// <returns></returns>
         private string GetBrand()
         {
-            var element = this.WebDriver.FindElement(By.Id("parameter-brand"));
-            var result = element.Text.TrimStart("品牌：".ToArray());
-            return result;
+            try
+            {
+                var element = this.WebDriver.FindElement(By.Id("parameter-brand"));
+                var result = element.Text.TrimStart("品牌：".ToArray());
+                return result;
+            }
+            catch{}
+            return string.Empty;
         }
 
         /// <summary>
@@ -166,8 +171,20 @@ namespace CommodityCollector.Collector
 
                         //模拟点击一次页面才能抓到商品图片
                         element.Click();
-                        var pictureElement = this.WebDriver.FindElement(By.Id("spec-img"));
-                        var jqimg = pictureElement.GetAttribute("jqimg");
+
+                        string jqimg = null;
+                        IWebElement pictureElement = GetElement1();
+                        if (pictureElement != null)
+                        {
+                            jqimg = pictureElement.GetAttribute("jqimg");
+                        }
+
+                        if (string.IsNullOrEmpty(jqimg))
+                        {
+                            pictureElement = GetElement2();
+                            jqimg = pictureElement.GetAttribute("jqimg");
+                        }
+
                         jqimg = jqimg.StartsWith("http://") ? jqimg : "http://" + jqimg.TrimStart("//".ToArray());
                         jqimg = jqimg.Split(new string[] { "!" }, StringSplitOptions.RemoveEmptyEntries)[0];
                         jqimg = jqimg.Replace(@"/n0/", "/imgzone/");
@@ -179,7 +196,195 @@ namespace CommodityCollector.Collector
                     }
                 }
             });
-            return result;
+
+            if(!result.Any())
+            {
+                await Task.Run(() =>
+                {
+                    for (var i = 1; i < 100; i++)
+                    {
+                        try
+                        {
+                            var selector = $"#spec-list > div > ul > li:nth-child({i}) > img";
+                            var element = this.WebDriver.FindElement(By.CssSelector(selector));
+                            if (element == null)
+                                break;
+
+                            //模拟点击一次页面才能抓到商品图片
+                            element.Click();
+
+                            string jqimg = null;
+                            IWebElement pictureElement = GetElement1();
+                            if (pictureElement != null)
+                            {
+                                jqimg = pictureElement.GetAttribute("jqimg");
+                            }
+
+                            if (string.IsNullOrEmpty(jqimg))
+                            {
+                                pictureElement = GetElement2();
+                                jqimg = pictureElement.GetAttribute("jqimg");
+                            }
+
+                            jqimg = jqimg.StartsWith("http://") ? jqimg : "http://" + jqimg.TrimStart("//".ToArray());
+                            jqimg = jqimg.Split(new string[] { "!" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                            jqimg = jqimg.Replace(@"/n0/", "/imgzone/");
+                            result.Add(jqimg);
+                        }
+                        catch
+                        {
+                            break;
+                        }
+                    }
+                });
+            }
+
+            if (!result.Any())
+            {
+                try
+                {
+                    var selector = $"#spec-list > div > ul > li > img";
+                    var element = this.WebDriver.FindElement(By.CssSelector(selector));
+
+                    //模拟点击一次页面才能抓到商品图片
+                    element.Click();
+
+                    string jqimg = null;
+                    IWebElement pictureElement = GetElement1();
+                    if (pictureElement != null)
+                    {
+                        jqimg = pictureElement.GetAttribute("jqimg");
+                    }
+
+                    if (string.IsNullOrEmpty(jqimg))
+                    {
+                        pictureElement = GetElement2();
+                        jqimg = pictureElement.GetAttribute("jqimg");
+                    }
+
+                    jqimg = jqimg.StartsWith("http://") ? jqimg : "http://" + jqimg.TrimStart("//".ToArray());
+                    jqimg = jqimg.Split(new string[] { "!" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    jqimg = jqimg.Replace(@"/n0/", "/imgzone/");
+                    result.Add(jqimg);
+                }
+                catch{}
+            }
+
+            return result;            
+        }
+
+        private IWebElement GetElement1()
+        {
+            IWebElement pictureElement = null;
+            try
+            {
+                pictureElement = this.WebDriver.FindElement(By.Id("spec-img"));
+            }
+            catch { }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.Id("spec-n0"));
+                }
+                catch { }
+            }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.Id("spec-n1"));
+                }
+                catch { }
+            }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.Id("spec-n2"));
+                }
+                catch { }
+            }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.Id("spec-n3"));
+                }
+                catch { }
+            }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.Id("spec-n4"));
+                }
+                catch { }
+            }
+
+            return pictureElement;
+        }
+
+        private IWebElement GetElement2()
+        {
+            IWebElement pictureElement = null;
+            try
+            {
+                pictureElement = this.WebDriver.FindElement(By.CssSelector("#spec-img"));
+            }
+            catch { }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.CssSelector("#spec-n0 > img"));
+                }
+                catch { }
+            }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.CssSelector("#spec-n1 > img"));
+                }
+                catch { }
+            }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.CssSelector("#spec-n2 > img"));
+                }
+                catch { }
+            }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.CssSelector("#spec-n3 > img"));
+                }
+                catch { }
+            }
+
+            if (pictureElement == null)
+            {
+                try
+                {
+                    pictureElement = this.WebDriver.FindElement(By.CssSelector("#spec-n4 > img"));
+                }
+                catch { }
+            }
+
+            return pictureElement;
         }
 
         /// <summary>

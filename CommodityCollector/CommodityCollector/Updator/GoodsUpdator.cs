@@ -41,7 +41,7 @@ namespace CommodityCollector.Updator
                 //brand_id = brand.brand_id,
                 provider_name = string.Empty,
                 goods_number = new Random().Next(100,1000),
-                goods_weight = 1000m,
+                goods_weight = 1m,
                 market_price = model.Price * 1.2m,
                 shop_price = model.Price,
                 promote_price = 0,

@@ -11,6 +11,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -91,10 +92,23 @@ namespace CommodityCollector
         private async Task StartCollect(List<string> urls)
         {
             this.btnStartCollect.Enabled = false;
-            foreach (var url in urls)
+
+            var count = urls.Count;
+            var temp = count;
+            for (var i=0;i< count; i++)
             {
+                var random = new Random();
+                var index = random.Next(0, temp);
+                temp--;
+                var url = urls[index];
+                urls.RemoveAt(index);
                 await CollectOne(url, 0);
             }
+
+            //foreach (var url in urls)
+            //{
+            //    await CollectOne(url, 0);
+            //}
         }
 
         private async Task CollectOne(string url, int retry)
@@ -104,8 +118,15 @@ namespace CommodityCollector
             {
                 var collect = new JdCollector(url);
                 model = await collect.GetResult();
+
+                var updatorModel = await DownLoad(model);
+                await UpdateToDatabase(updatorModel);
+
+                WinformLog.ShowLog(Environment.NewLine);
+                WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
+                WinformLog.ShowLog(Environment.NewLine);
             }
-            catch(Exception e)
+            catch
             {
                 ChromeWebDriver.WebDriver.Close();
                 ChromeWebDriver.WebDriver.Quit();
@@ -114,13 +135,6 @@ namespace CommodityCollector
                     return;
                 await CollectOne(url, ++retry);
             }
-
-            var updatorModel = await DownLoad(model);
-            await UpdateToDatabase(updatorModel);
-
-            WinformLog.ShowLog(Environment.NewLine);
-            WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
-            WinformLog.ShowLog(Environment.NewLine);
         }
 
         private async Task<UpdatorModel> DownLoad(JdModel model)

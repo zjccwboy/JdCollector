@@ -110,31 +110,36 @@ namespace CommodityCollector.Updator
             decimal result = 1m;
             if (!updatorModel.JdModel.Attributes.Any())
                 return result;
-            
+
+            bool isExistWeight = false;
             if(updatorModel.JdModel.Attributes.TryGetValue("重量", out string val))
             {
-                val = val.ToLower().TrimEnd("kg".ToArray());
-                val = val.TrimEnd('g');
-                decimal.TryParse(val, out result);
-                return result;
+                isExistWeight = true;
             }
-
-            if (updatorModel.JdModel.Attributes.TryGetValue("商品重量", out val))
+            else if (updatorModel.JdModel.Attributes.TryGetValue("商品重量", out val))
             {
-                val = val.ToLower().TrimEnd("kg".ToArray());
-                val = val.TrimEnd('g');
-                decimal.TryParse(val, out result);
-                return result;
+                isExistWeight = true;
             }
-
-            if (updatorModel.JdModel.Attributes.TryGetValue("商品毛重", out val))
+            else if(updatorModel.JdModel.Attributes.TryGetValue("商品毛重", out val))
             {
-                val = val.ToLower().TrimEnd("kg".ToArray());
-                val = val.TrimEnd('g');
-                decimal.TryParse(val, out result);
-                return result;
+                isExistWeight = true;
             }
 
+            val = val.ToLower();
+            if (isExistWeight)
+            {
+                if (val.EndsWith("kg"))
+                {
+                    val = val.TrimEnd("kg".ToArray());
+                    decimal.TryParse(val, out result);
+                }
+                if (val.EndsWith("g"))
+                {
+                    val = val.TrimEnd('g');
+                    decimal.TryParse(val, out result);
+                    result = result / 1000;
+                }
+            }
             return result;
         }
 

@@ -39,7 +39,7 @@ namespace CommodityCollector.Updator
                 sort_order = (uint)maxSortOrder,
                 template_file = string.Empty,
                 measure_unit = string.Empty,
-                show_in_nav = true,
+                show_in_nav = false,
                 style = string.Empty,
                 is_show = true,
                 grade = true,

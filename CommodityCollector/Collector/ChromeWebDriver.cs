@@ -25,7 +25,16 @@ namespace CommodityCollector.Collector
             return WebDriver;
         }
 
-        public static ChromeOptions GetOptions()
+        public static void Quit()
+        {
+            try
+            {
+                WebDriver.Quit();
+            }
+            catch { }
+        }
+
+        private static ChromeOptions GetOptions()
         {
             var options = new ChromeOptions();
             options.AddArgument("--headless");

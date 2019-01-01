@@ -138,9 +138,10 @@ namespace CommodityCollector
                 WinformLog.ShowLog($"---------------------------------------------------------------------------------------------------");
                 WinformLog.ShowLog(Environment.NewLine);
             }
-            catch
+            catch(Exception e)
             {
-                collect.ReloadWebDriver();
+                WinformLog.ShowLog(Environment.NewLine);
+                WinformLog.ShowLog(e.ToString());
             }
         }
 
@@ -238,6 +239,7 @@ namespace CommodityCollector
                 if (!this.IsRunOut)
                     return;
 
+                ChromeWebDriver.Quit();
             }
             catch { }
         }

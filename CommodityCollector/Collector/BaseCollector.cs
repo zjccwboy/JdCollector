@@ -19,7 +19,7 @@ namespace CommodityCollector.Collector
             this.WebDriver = ChromeWebDriver.CreateWebDriver();
         }
 
-        public void ReloadWebDriver()
+        protected void ReloadWebDriver()
         {
             try
             {
@@ -40,7 +40,14 @@ namespace CommodityCollector.Collector
             {
                 try
                 {
-                    this.WebDriver.Navigate().GoToUrl(this.Url);
+                    try
+                    {
+                        this.WebDriver.Navigate().GoToUrl(this.Url);
+                    }
+                    catch
+                    {
+                        this.ReloadWebDriver();
+                    }
                 }
                 catch { }
             });

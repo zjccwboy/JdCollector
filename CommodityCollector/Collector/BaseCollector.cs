@@ -16,7 +16,19 @@ namespace CommodityCollector.Collector
         public BaseCollector(string url)
         {
             this.Url = url;
-            this.WebDriver = ChromeWebDriver.WebDriver;
+            this.WebDriver = ChromeWebDriver.CreateWebDriver();
+        }
+
+        public void ReloadWebDriver()
+        {
+            try
+            {
+                this.WebDriver.Close();
+            }
+            catch { }
+
+            ChromeWebDriver.WebDriver = null;
+            this.WebDriver = ChromeWebDriver.CreateWebDriver();
         }
 
         /// <summary>

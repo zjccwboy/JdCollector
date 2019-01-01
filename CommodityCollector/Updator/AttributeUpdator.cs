@@ -32,7 +32,7 @@ namespace CommodityCollector.Updator
                 {
                     cat_id = goodsType.cat_id,
                     attr_name = colorAttributeName,
-                    attr_input_type = true,
+                    attr_input_type = false,
                     attr_type = true,
                     attr_values = string.Empty,
                 };
@@ -53,7 +53,7 @@ namespace CommodityCollector.Updator
                 {
                     cat_id = goodsType.cat_id,
                     attr_name = sizeAttributeName,
-                    attr_input_type = true,
+                    attr_input_type = false,
                     attr_type = true,
                     attr_values = string.Empty,
                 };

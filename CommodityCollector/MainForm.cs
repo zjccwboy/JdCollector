@@ -126,9 +126,9 @@ namespace CommodityCollector
         private async Task CollectOne(string url, int retry)
         {
             JdModel model = null;
+            var collect = new JdCollector(url);
             try
-            {
-                var collect = new JdCollector(url);
+            {                
                 model = await collect.GetResult();
 
                 var updatorModel = await DownLoad(model);
@@ -140,12 +140,7 @@ namespace CommodityCollector
             }
             catch
             {
-                ChromeWebDriver.WebDriver.Close();
-                ChromeWebDriver.WebDriver.Quit();
-                ChromeWebDriver.WebDriver = new ChromeDriver();
-                if (retry > 3)
-                    return;
-                await CollectOne(url, ++retry);
+                collect.ReloadWebDriver();
             }
         }
 
@@ -243,8 +238,6 @@ namespace CommodityCollector
                 if (!this.IsRunOut)
                     return;
 
-                ChromeWebDriver.WebDriver.Close();
-                ChromeWebDriver.WebDriver.Quit();
             }
             catch { }
         }

@@ -194,7 +194,7 @@ namespace CommodityCollector.Collector
                     if (element == null)
                         break;
 
-                    var val = element.GetAttribute("title");
+                    var val = element.GetAttribute("data-value");
                     result.Add(val);
                 }
                 catch
@@ -242,7 +242,7 @@ namespace CommodityCollector.Collector
                     if (element == null)
                         break;
 
-                    var val = element.GetAttribute("title");
+                    var val = element.GetAttribute("data-value");
                     result.Add(val);
                 }
                 catch

@@ -11,9 +11,28 @@ namespace CommodityCollector.Collector
     public class ChromeWebDriver
     {
         public static IWebDriver WebDriver { get; set; }
-        static ChromeWebDriver()
+
+        public static IWebDriver CreateWebDriver()
         {
-            WebDriver = new ChromeDriver();
+            if (WebDriver != null)
+                return WebDriver;
+
+            var service = ChromeDriverService.CreateDefaultService();
+            service.HideCommandPromptWindow = true;
+
+            var options = GetOptions();
+            WebDriver = new ChromeDriver(service, options, TimeSpan.FromMinutes(3));
+            return WebDriver;
+        }
+
+        public static ChromeOptions GetOptions()
+        {
+            var options = new ChromeOptions();
+            options.AddArgument("--headless");
+            options.AddArgument("--window-size=1440,900");
+            options.AddUserProfilePreference("profile", new { default_content_setting_values = new { images = 2, javascript = 2 } });
+
+            return options;
         }
     }
 }

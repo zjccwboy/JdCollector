@@ -14,6 +14,8 @@ namespace CommodityCollector.Models
         public string Brand { get; set; }
         public string Category { get; set; }
         public Dictionary<string, string> Attributes { get; set; }
+        public HashSet<string> ColorAttributes { get; set; }
+        public HashSet<string> SizeAtrtributes { get; set; }
         public List<string> GoodsPictures { get; set; }
         public List<string> GoodsRemarks { get; set; }
     }

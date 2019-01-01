@@ -19,10 +19,52 @@ namespace CommodityCollector.Updator
             if (attributes == null || !attributes.Any())
                 return result;
 
-            foreach(var arrtibute in attributes)
+            //颜色
+            const string colorAttributeName = "颜色";
+            var entity = await this.Rpository.GetByNameAndCatId(colorAttributeName, goodsType.cat_id);
+            if (entity != null)
             {
-                var entity = await this.Rpository.GetByName(arrtibute);
-                if(entity != null)
+                result[entity.attr_id] = colorAttributeName;
+            }
+            else
+            {
+                entity = new ecs_attribute
+                {
+                    cat_id = goodsType.cat_id,
+                    attr_name = colorAttributeName,
+                    attr_input_type = true,
+                    attr_type = true,
+                    attr_values = string.Empty,
+                };
+                await this.Rpository.InsertAsync(entity);
+                result[entity.attr_id] = colorAttributeName;
+            }
+
+            //尺寸
+            const string sizeAttributeName = "尺寸";
+            entity = await this.Rpository.GetByNameAndCatId(sizeAttributeName, goodsType.cat_id);
+            if (entity != null)
+            {
+                result[entity.attr_id] = sizeAttributeName;
+            }
+            else
+            {
+                entity = new ecs_attribute
+                {
+                    cat_id = goodsType.cat_id,
+                    attr_name = sizeAttributeName,
+                    attr_input_type = true,
+                    attr_type = true,
+                    attr_values = string.Empty,
+                };
+                await this.Rpository.InsertAsync(entity);
+                result[entity.attr_id] = sizeAttributeName;
+            }
+
+            foreach (var arrtibute in attributes)
+            {
+                entity = await this.Rpository.GetByNameAndCatId(arrtibute, goodsType.cat_id);
+                if (entity != null)
                 {
                     result[entity.attr_id] = arrtibute;
                     continue;
@@ -39,6 +81,7 @@ namespace CommodityCollector.Updator
                 await this.Rpository.InsertAsync(entity);
                 result[entity.attr_id] = arrtibute;
             }
+
             return result;
         }
     }

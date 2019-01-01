@@ -13,20 +13,12 @@ namespace CommodityCollector.Updator
     {
         public GoodsAttributeUpdator(GoodsAttributeRpository rpository) : base(rpository) { }
 
-        public async Task AddGoodsAttributes(Dictionary<uint,string> goodsAttributes, uint goodsId)
+        public async Task AddGoodsAttributes(Dictionary<uint,string> goodsAttributes, uint goodsId, Dictionary<uint, List<string>> maryAttributes)
         {
             await this.Rpository.DeleteByGoodsId(goodsId);
 
             foreach(var kv in goodsAttributes)
             {
-                //var entity = await this.Rpository.GetByAttrId(kv.Key);
-                //if (entity != null)
-                //{
-                //    entity.goods_id = goodsId;
-                //    await this.Rpository.UpdateAsync(entity);
-                //    continue;
-                //}
-
                 var entity = new ecs_goods_attr
                 {
                     goods_id = goodsId,
@@ -37,6 +29,22 @@ namespace CommodityCollector.Updator
 
                 await this.Rpository.InsertAsync(entity);
             }
+
+            foreach(var kv in maryAttributes)
+            {
+                foreach(var d in kv.Value)
+                {
+                    var entity = new ecs_goods_attr
+                    {
+                        goods_id = goodsId,
+                        attr_id = kv.Key,
+                        attr_value = d,
+                        attr_price = string.Empty,
+                    };
+                    await this.Rpository.InsertAsync(entity);
+                }
+            }
+
         }
     }
 }

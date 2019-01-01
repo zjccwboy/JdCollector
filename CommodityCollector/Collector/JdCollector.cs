@@ -46,6 +46,14 @@ namespace CommodityCollector.Collector
             model.Attributes= GetGoodsAttributes();
             WinformLog.ShowLog($"商品属性分析结果：{Newtonsoft.Json.JsonConvert.SerializeObject(model.Attributes)}");
 
+            //商品颜色属性
+            model.ColorAttributes = GetColorAttributes();
+            WinformLog.ShowLog($"商品颜色属性分析结果：{Newtonsoft.Json.JsonConvert.SerializeObject(model.ColorAttributes)}");
+
+            //商品尺寸属性
+            model.SizeAtrtributes = GetSizeAttributes();
+            WinformLog.ShowLog($"商品尺寸属性分析结果：{Newtonsoft.Json.JsonConvert.SerializeObject(model.SizeAtrtributes)}");
+
             //商品图片
             model.GoodsPictures = await GetGoodsPictures();
             WinformLog.ShowLog("商品图片分析结果：");
@@ -141,6 +149,101 @@ namespace CommodityCollector.Collector
                         continue;
 
                     result[attributes[0]] = attributes[1];
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 获取商品颜色属性
+        /// </summary>
+        /// <returns></returns>
+        private HashSet<string> GetColorAttributes()
+        {
+            var result = new HashSet<string>();
+            const string attributeName = "颜色";
+            try
+            {
+                var colorElement = this.WebDriver.FindElement(By.CssSelector("#choose-attr-1"));
+                if (colorElement == null)
+                    return result;
+                
+                var attributeVal = colorElement.GetAttribute("data-type");
+                if (attributeVal.Trim() != attributeName)
+                {
+                    return result;
+                }
+            }
+            catch
+            {
+                return result;
+            }
+
+
+            for (var i = 1; i < 100; i++)
+            {
+                try
+                {
+                    var xpath = $"//*[@id=\"choose-attr-1\"]/div[2]/div[{i}]";
+                    var element = this.WebDriver.FindElement(By.XPath(xpath));
+                    if (element == null)
+                        break;
+
+                    var val = element.GetAttribute("title");
+                    result.Add(val);
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 获取商品尺寸属性
+        /// </summary>
+        /// <returns></returns>
+        private HashSet<string> GetSizeAttributes()
+        {
+            var result = new HashSet<string>();
+
+            const string attributeName = "尺码";
+            try
+            {
+                var colorElement = this.WebDriver.FindElement(By.CssSelector("#choose-attr-2"));
+                if (colorElement == null)
+                    return result;
+
+                var attributeVal = colorElement.GetAttribute("data-type");
+                if (attributeVal.Trim() != attributeName)
+                {
+                    return result;
+                }
+            }
+            catch
+            {
+                return result;
+            }
+
+
+            for (var i = 1; i < 100; i++)
+            {
+                try
+                {
+                    var xpath = $"//*[@id=\"choose-attr-2\"]/div[2]/div[{i}]";
+                    var element = this.WebDriver.FindElement(By.XPath(xpath));
+                    if (element == null)
+                        break;
+
+                    var val = element.GetAttribute("title");
+                    result.Add(val);
                 }
                 catch
                 {

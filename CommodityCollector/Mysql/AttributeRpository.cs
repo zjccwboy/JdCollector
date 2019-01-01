@@ -29,5 +29,17 @@ namespace CommodityCollector.Mysql
             }
             return null;
         }
+
+        public async Task<ecs_attribute> GetByNameAndCatId(string name, uint catId)
+        {
+            var sql = $"select * from ecs_attribute where attr_name='{name}' and cat_id='{catId}'";
+            var command = new CommandDefinition(sql);
+            var q = await this.sqlConnection.QueryAsync<ecs_attribute>(sql, command);
+            if (q.Any())
+            {
+                return q.First();
+            }
+            return null;
+        }
     }
 }

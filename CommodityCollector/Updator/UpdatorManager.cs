@@ -22,6 +22,9 @@ namespace CommodityCollector.Updator
             //获取商品属性ecs_goods_attr表对应的attr_id attr_value
             var goodsAttributes = GetGoodsAttributes(attributes, model.JdModel.Attributes);
 
+            //尺寸、颜色属性
+            var maryAttributes = GetMaryAttributes(attributes, model);
+
             //写品牌信息
             var brand = await AddBrand(model.JdModel);
 
@@ -32,7 +35,7 @@ namespace CommodityCollector.Updator
             var goods = await AddGoods(model, brand, goodsType.cat_id, category.cat_id);
 
             //写商品属性
-            await AddGoodsAttributes(goodsAttributes, goods);
+            await AddGoodsAttributes(goodsAttributes, goods, maryAttributes);
 
             //写商品图片框
             await AddGoodsGallerys(model.Pictures, model.Thumbnails, goods);
@@ -56,9 +59,38 @@ namespace CommodityCollector.Updator
             var goodsAttributes = new Dictionary<uint, string>();
             foreach(var kv in attributes)
             {
-                goodsAttributes[kv.Key] = sourceAttributes[kv.Value];
+                if (sourceAttributes.ContainsKey(kv.Value))
+                {
+                    goodsAttributes[kv.Key] = sourceAttributes[kv.Value];
+                }
             }
             return goodsAttributes;
+        }
+
+        private static Dictionary<uint, List<string>> GetMaryAttributes(Dictionary<uint, string> attributes, UpdatorModel model)
+        {
+            var result = new Dictionary<uint, List<string>>();
+            var colors = model.JdModel.ColorAttributes.ToList();
+            foreach (var kv in attributes)
+            {
+                if (kv.Value == "颜色")
+                {
+                    result[kv.Key] = colors;
+                    break;
+                }
+            }
+
+            var sizes = model.JdModel.SizeAtrtributes.ToList();
+            foreach (var kv in attributes)
+            {
+                if (kv.Value == "尺寸")
+                {
+                    result[kv.Key] = sizes;
+                    break;
+                }
+            }
+
+            return result;
         }
 
         private static async Task<ecs_brand> AddBrand(JdModel model)
@@ -80,10 +112,10 @@ namespace CommodityCollector.Updator
             return entity;
         }
 
-        private static async Task AddGoodsAttributes(Dictionary<uint,string> goodsAttributes, ecs_goods goods)
+        private static async Task AddGoodsAttributes(Dictionary<uint,string> goodsAttributes, ecs_goods goods, Dictionary<uint, List<string>> maryAttributes)
         {
             var updator = new GoodsAttributeUpdator(new GoodsAttributeRpository());
-            await updator.AddGoodsAttributes(goodsAttributes, goods.goods_id);
+            await updator.AddGoodsAttributes(goodsAttributes, goods.goods_id, maryAttributes);
         }
 
         private static async Task AddGoodsGallerys(List<string> pictures, List<string> thumbPictures, ecs_goods goods)

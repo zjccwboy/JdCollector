@@ -215,7 +215,10 @@ namespace CommodityCollector
 
             foreach (var url in urls)
             {
-                if (!url.StartsWith("https://item.jd.com") && !url.StartsWith("http://item.jd.com"))
+                if (!url.StartsWith("https://item.jd.com") 
+                    && !url.StartsWith("http://item.jd.com")
+                    && !url.StartsWith("https://i-item.jd.com")
+                    && !url.StartsWith("http://i-item.jd.com"))
                 {
                     MessageBox.Show($"商品网址：{url}不符合采集要求，只能输入京东的商品地址。","提示！");
                     return;
